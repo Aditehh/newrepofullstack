@@ -4,9 +4,13 @@ import { prisma } from "./db";
 import "dotenv/config";
 import cors from "cors";
 
+
+
 const app = express(); // creates your backend app
 app.use(express.json()); //converts incomming json into usable javascript
 app.use(cors());
+
+
 
 app.post("/notes", async (req, res) => {
   const { title, content } = req.body; //extract data from request
