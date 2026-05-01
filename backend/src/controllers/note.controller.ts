@@ -22,7 +22,7 @@ export const createNewNote = async (req: Request, res: Response) => {
 
 export const updateExistingNote = async (req: Request, res: Response) => {
   
-    const { id } = req.params;
+    const { id } = req.params;   
         const parsed = updateNoteSchema.parse(req.body);
 
         const updated = await noteService.updateNote(
