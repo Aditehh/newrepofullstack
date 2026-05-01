@@ -16,14 +16,17 @@ export const createNote = async (title: string, content: string) => {
 
 export const updateNote = async (
     id: string | string[],
-    title: string,
-    content: string
+    title?: string,
+    content?: string
 ) => {
     const noteId = Array.isArray(id) ? id[0] : id;
 
     return await prisma.note.update({
         where: { id: noteId },
-        data: { title, content },
+        data: {
+            ...(title != undefined && ({ title })),
+            ...(content != undefined && ({ content }))
+        },
     });
 };
 
