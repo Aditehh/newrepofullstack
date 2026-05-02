@@ -93,6 +93,7 @@ app.use("/auth", authRoutes)
 app.use("/notes", noteRoutes);
 app.use(errorHandler)
 
+
 app.listen(3001, () => {
   console.log("Server running on 3001");
 });
