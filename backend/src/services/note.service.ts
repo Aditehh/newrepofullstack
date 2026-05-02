@@ -10,7 +10,9 @@ export const getNotes = async () => {
 
 export const createNote = async (title: string, content: string) => {
     return await prisma.note.create({
+
         data: { title, content },
+
     });
 };
 
