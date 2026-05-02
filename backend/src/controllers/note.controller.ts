@@ -11,9 +11,11 @@ export const getAllNotes = async (req: Request, res: Response) => {
 export const createNewNote = async (req: Request, res: Response) => {
 
     const parsed = createNoteSchema.parse(req.body)
+    const userId = (req as any).userId;
     const note = await noteService.createNote(
         parsed.title,
-        parsed.content
+        parsed.content,
+        userId
     );
 
     res.status(201).json(note);
@@ -21,18 +23,18 @@ export const createNewNote = async (req: Request, res: Response) => {
 }
 
 export const updateExistingNote = async (req: Request, res: Response) => {
-  
-    const { id } = req.params;   
-        const parsed = updateNoteSchema.parse(req.body);
 
-        const updated = await noteService.updateNote(
-            id,
-            parsed.title,
-            parsed.content
+    const { id } = req.params;
+    const parsed = updateNoteSchema.parse(req.body);
 
-        );
+    const updated = await noteService.updateNote(
+        id,
+        parsed.title,
+        parsed.content
 
-        res.status(201).json(updated);
+    );
+
+    res.status(201).json(updated);
 
 
 };

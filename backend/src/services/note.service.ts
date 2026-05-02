@@ -8,10 +8,14 @@ export const getNotes = async () => {
     });
 };
 
-export const createNote = async (title: string, content: string) => {
+export const createNote = async (title: string, content: string, userId: string) => {
     return await prisma.note.create({
 
-        data: { title, content },
+        data: {
+            title,
+            content,
+            userId
+        },
 
     });
 };

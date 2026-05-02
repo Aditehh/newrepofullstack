@@ -81,12 +81,14 @@ import cors from "cors";
 import noteRoutes from "./routes/note.routes"
 import "dotenv/config"
 import { errorHandler } from "./middleware/error.middleware";
+import authRoutes from "./routes/auth.routes";
 
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use("/auth", authRoutes)
 
 app.use("/notes", noteRoutes);
 app.use(errorHandler)
