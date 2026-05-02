@@ -4,7 +4,8 @@ import { createNoteSchema, updateNoteSchema } from "../validators/note.validator
 
 
 export const getAllNotes = async (req: Request, res: Response) => {
-    const notes = await noteService.getNotes();
+    const userId = (req as any).userId;
+    const notes = await noteService.getNotes(userId);
     res.json(notes);
 }
 
@@ -24,13 +25,15 @@ export const createNewNote = async (req: Request, res: Response) => {
 
 export const updateExistingNote = async (req: Request, res: Response) => {
 
+    const userId = (req as any).userId;
     const { id } = req.params;
     const parsed = updateNoteSchema.parse(req.body);
 
     const updated = await noteService.updateNote(
         id,
         parsed.title,
-        parsed.content
+        parsed.content,
+        userId
 
     );
 
@@ -40,9 +43,11 @@ export const updateExistingNote = async (req: Request, res: Response) => {
 };
 
 export const deleteExistingNote = async (req: Request, res: Response) => {
+    const userId = (req as any).userId
     const { id } = req.params;
 
-    const deleted = await noteService.deleteNote(id);
+
+    const deleted = await noteService.deleteNote(id, userId);
     res.json(deleted);
 };
 
