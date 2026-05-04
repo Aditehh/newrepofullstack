@@ -2,6 +2,7 @@
 //talks to the database and things like that ig
 import { prisma } from "../db";
 
+
 export const getNotes = async (userId: string) => {
     return await prisma.note.findMany({
         where: { userId },

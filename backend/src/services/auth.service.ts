@@ -30,11 +30,24 @@ export const login = async (email: string, password: string) => {
   const valid = await bcrypt.compare(password, user.password);
   if (!valid) throw new Error("Invalid password");
 
-  const token = jwt.sign(
-    { userId: user.id },
-    JWT_SECRET,
-    { expiresIn: "1d" }
-  );
 
-  return { token };
+  const accessToken = jwt.sign(
+    { userId : user.id},
+    process.env.JWT_SECRET!,
+    { expiresIn: "15m" }
+  )
+
+  const refreshToken = jwt.sign(
+    { userId: user.id },
+    process.env.JWT_REFRESH_SECRET!,
+    {expiresIn: "7d"}
+  )
+
+  // const token = jwt.sign(
+  //   { userId: user.id },
+  //   JWT_SECRET,
+  //   { expiresIn: "1d" }
+  // );
+
+  return { accessToken, refreshToken };
 };
