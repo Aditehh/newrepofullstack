@@ -91,7 +91,7 @@ export default function Home() {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`
-      },
+      },  
       body: JSON.stringify({ title, content })
     });
     // console.log(token);

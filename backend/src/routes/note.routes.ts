@@ -5,7 +5,7 @@ import {
   updateExistingNote,
   deleteExistingNote,
 } from "../controllers/note.controller";
-
+  
 import { authMiddleware } from "../middleware/auth.middleware";
 
 const router = express.Router();
