@@ -33,13 +33,13 @@ export const login = async (email: string, password: string) => {
   if (!valid) throw new Error("Invalid password");
 
 
-  const accessToken = jwt.sign(
+  const accessToken = jwt.sign( // this shit is short lived 
     { userId : user.id},
     process.env.JWT_SECRET!,
-    { expiresIn: "15m" }
+    { expiresIn: "10s" }
   )
 
-  const refreshToken = jwt.sign(
+  const refreshToken = jwt.sign( //this shit is long lived 
     { userId: user.id },
     process.env.JWT_REFRESH_SECRET!,
     {expiresIn: "7d"}

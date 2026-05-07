@@ -10,3 +10,5 @@ export const updateNoteSchema = z.object({
     content: z.string().trim().min(1).optional()
 });
 
+// new problem when i click the register or login when theres nothing written on it, it does go to the database and hashes the null field into a hashed password
+

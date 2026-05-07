@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { apiFetch } from "@/lib/api";
+
 
 export default function Home() {
   const [notes, setNotes] = useState<any[]>([]);
@@ -47,7 +49,16 @@ export default function Home() {
 
     localStorage.setItem("accessToken", data.accessToken);
     localStorage.setItem("refreshToken", data.refreshToken);
+
+    fetchNotes();
   }
+
+  useEffect(() => {
+    const token = getToken();
+    if (token) {
+      fetchNotes();
+    }
+  }, []);
 
 
   const fetchNotes = async () => {
@@ -71,12 +82,6 @@ export default function Home() {
     // setNotes(data);
   };
 
-  useEffect(() => {
-    const token = getToken();
-    if (token) {
-      fetchNotes();
-    }
-  }, []);
 
 
 
@@ -86,14 +91,29 @@ export default function Home() {
 
     if (!title || !content) return;
 
-    await fetch("http://localhost:3001/notes", {
+    // await fetch("http://localhost:3001/notes", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: `Bearer ${token}`
+    //   },  
+    //   body: JSON.stringify({ title, content })
+    // });
+
+
+    await apiFetch(
+      "http://localhost:3001/notes", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },  
-      body: JSON.stringify({ title, content })
-    });
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        title,
+        content
+      })
+    }
+    )
+
     // console.log(token);
 
     setTitle("");
@@ -114,17 +134,31 @@ export default function Home() {
 
     if (!editingId) return;
 
-    await fetch(`http://localhost:3001/notes/${editingId}`, {
-      method: "PUT",
+    // await fetch(`http://localhost:3001/notes/${editingId}`, {
+    //   method: "PUT",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: `Bearer ${token}`
+    //   },
+    //   body: JSON.stringify({
+    //     title: editTitle,
+    //     content: editContent,
+    //   })
+    // });
+
+    await apiFetch(
+      `http://localhost:3001/notes/${editingId}`, {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`
       },
       body: JSON.stringify({
         title: editTitle,
-        content: editContent,
+        content: editContent
       })
-    });
+    }
+    )
 
     setEditingId(null);
     setEditTitle("");
@@ -136,14 +170,24 @@ export default function Home() {
     const token = localStorage.getItem("accessToken");
 
 
-    await fetch(`http://localhost:3001/notes/${id}`, {
+    // await fetch(`http://localhost:3001/notes/${id}`, {
+    //   method: "DELETE",
+    //   headers: {
+    //     Authorization: `Bearer ${token}`
+    //   }
+
+
+    // });
+
+    await apiFetch(
+      `http://localhost:3001/notes/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`
       }
+    }
+    )
 
-
-    });
     fetchNotes();
     console.log("Notes is ", notes)
     console.log("Type ", typeof notes)
