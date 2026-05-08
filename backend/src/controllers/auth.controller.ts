@@ -1,13 +1,22 @@
 import { Request, Response } from "express";
 import * as authService from "../services/auth.service";
 import jwt from "jsonwebtoken";
+import { registerSchema } from "../validators/auth.validator";
+
 
 export const registerUser = async (req: Request, res: Response) => {
 
-    const { email, password } = req.body;
+    try {
+        const parsed = registerSchema.parse(req.body)
 
-    const user = await authService.register(email, password);
-    res.json(user);
+        const user = await authService.register(parsed.email, parsed.password);
+        res.json(user);
+    } catch (error: any) {
+
+        res.status(400).json({
+            error: error.message
+        })
+    }
 }
 
 
