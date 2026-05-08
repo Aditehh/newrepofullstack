@@ -45,6 +45,7 @@ export const login = async (email: string, password: string) => {
     {expiresIn: "7d"}
   )
 
+
   // const token = jwt.sign(
   //   { userId: user.id },
   //   JWT_SECRET,
