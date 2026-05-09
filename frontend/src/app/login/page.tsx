@@ -8,6 +8,16 @@ export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+     useEffect(() => {
+
+            const token = localStorage.getItem("accessToken");
+
+            if (token) {
+                router.push("/notes");
+            }
+
+        }, [])
+
     const login = async () => {
 
         const res = await fetch(
@@ -26,15 +36,7 @@ export default function LoginPage() {
         localStorage.setItem("accessToken", data.accessToken);
         localStorage.setItem("refreshToken", data.refreshToken);
 
-        useEffect(() => {
-
-            const token = localStorage.getItem("accessToken");
-
-            if (token) {
-                router.push("/notes");
-            }
-
-        }, [])
+       
 
 
 

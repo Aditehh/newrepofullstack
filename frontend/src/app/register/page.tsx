@@ -13,7 +13,20 @@ export default function RegisterPage() {
   const [password, setPassword] =
     useState("");
 
+  useEffect(() => {
+
+    const token = localStorage.getItem("accessToken");
+
+    if (token) {
+      router.push("/notes");
+    }
+
+  }, [])
+
+
   const register = async () => {
+
+
 
     await fetch(
       "http://localhost:3001/auth/register",
@@ -35,15 +48,7 @@ export default function RegisterPage() {
     router.push("/login");
   };
 
-  useEffect(() => {
 
-    const token = localStorage.getItem("accessToken");
-
-    if (token) {
-      router.push("/notes")
-    }
-
-  }, [])
 
   return (
     <div style={{ padding: 20 }}>
