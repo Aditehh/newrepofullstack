@@ -1,5 +1,5 @@
 "use client"
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
 export default function LoginPage() {
@@ -25,6 +25,17 @@ export default function LoginPage() {
 
         localStorage.setItem("accessToken", data.accessToken);
         localStorage.setItem("refreshToken", data.refreshToken);
+
+        useEffect(() => {
+
+            const token = localStorage.getItem("accessToken");
+
+            if (token) {
+                router.push("/notes");
+            }
+
+        }, [])
+
 
 
         router.push("/notes");
