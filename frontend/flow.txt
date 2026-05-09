@@ -1,0 +1,37 @@
+Error standardization
+
+↓
+
+2️⃣ Pagination/search/filtering
+
+↓
+
+3️⃣ Rate limiting
+
+↓
+
+4️⃣ httpOnly refresh cookies
+
+↓
+
+5️⃣ Tags system
+
+↓
+
+6️⃣ Rich text editor
+
+↓
+
+7️⃣ Image uploads
+
+↓
+
+8️⃣ AI summarization/search
+
+↓
+
+9️⃣ Redis caching
+
+↓
+
+🔟 Docker + deployment

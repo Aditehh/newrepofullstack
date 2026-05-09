@@ -27,7 +27,6 @@ export default function RegisterPage() {
   const register = async () => {
 
 
-
     await fetch(
       "http://localhost:3001/auth/register",
       {

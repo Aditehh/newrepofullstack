@@ -91,7 +91,10 @@ app.use(express.json());
 app.use("/auth", authRoutes)
 
 app.use("/notes", noteRoutes);
-app.use(errorHandler)
+
+app.use(errorHandler) 
+// the errorHandler is at the last because middleware chain flows downward
+// routes run first and if errors happens then they go and pile into the errrorhaldner
 
 
 app.listen(3001, () => {
