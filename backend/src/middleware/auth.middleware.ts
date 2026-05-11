@@ -10,7 +10,7 @@ export const authMiddleware = (
     next: NextFunction
 ) => {
     const JWT_SECRET = process.env.JWT_SECRET!;
-    console.log("middlewares jwt is ",JWT_SECRET);
+    console.log("middlewares jwt is ", JWT_SECRET);
 
     const authHeader = req.headers.authorization;
 

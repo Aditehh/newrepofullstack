@@ -1,10 +1,10 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import * as authService from "../services/auth.service";
 import jwt from "jsonwebtoken";
 import { registerSchema } from "../validators/auth.validator";
 
 
-export const registerUser = async (req: Request, res: Response) => {
+export const registerUser = async (req: Request, res: Response, next: NextFunction) => {
 
     try {
         const parsed = registerSchema.parse(req.body)
@@ -13,10 +13,8 @@ export const registerUser = async (req: Request, res: Response) => {
         res.json(user);
     } catch (error: any) {
 
-        res.status(400).json({
-            error: error.message
-        })
-        
+        next(error)
+
     }
 }
 
@@ -47,6 +45,7 @@ export const refreshAccessToken = async (
             refreshToken,
             process.env.JWT_REFRESH_SECRET!
         ) as any;
+
 
         const newAccessToken = jwt.sign(
             { userId: decoded.userId },

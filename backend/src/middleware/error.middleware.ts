@@ -15,11 +15,13 @@ export const errorHandler = (
 
 
   // Zod validation error
-  if (err instanceof ZodError) {
+  if (err instanceof ZodError) { //checks if this error was created by zod
+
     return res.status(400).json({
       message: "Validation failed",
       errors: err.issues,
     });
+    
   }
 
 
