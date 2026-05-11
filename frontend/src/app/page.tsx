@@ -290,7 +290,7 @@
 //             <button onClick={() => deleteNote(note.id)}>Delete Note</button>
 //           </p>
 //           <button onClick={() => startEdit(note)}>edit</button>
-//         </div>
+//         </div> 
 //       ))}
 //     </div>
 //   );

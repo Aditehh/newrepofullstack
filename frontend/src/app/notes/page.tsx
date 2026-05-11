@@ -181,8 +181,63 @@ export default function NotesPage() {
 
 
     return (
-        <div>
 
+        <div>
+            <h1>Notes</h1>
+
+            <div>
+                <input
+                    placeholder="Title"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                />
+                <br />
+                <textarea
+                    placeholder="Content"
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                />
+                <br />
+                <button onClick={createNote}>Add Note</button>
+            </div>
+
+            <hr />
+
+
+            {editingId && (
+                <div style={{ marginBottom: 20 }}>
+                    <h2>Edit Note</h2>
+
+                    <input
+                        value={editTitle}
+                        onChange={(e) => setEditTitle(e.target.value)}
+                        placeholder="Title"
+                    />
+
+                    <br />
+                    <textarea value={editContent} onChange={(e) => setEditContent(e.target.value)} placeholder="Content" />
+                    <br />
+                    <button onClick={updateNote}>
+
+                        Save Changes          </button>
+
+                    <button onClick={() => setEditingId(null)}>
+                        Cancel
+                    </button>
+                </div>
+            )}
+
+
+            {notes.map((note) => (
+                <div key={note.id}>
+                    <h2>{note.title}</h2>
+                    <p>{note.content}</p>
+                    <p>
+                        <button onClick={() => deleteNote(note.id)}>Delete Note</button>
+                    </p>
+                    <button onClick={() => startEdit(note)}>edit</button>
+                </div>
+            ))};
         </div>
     )
 }

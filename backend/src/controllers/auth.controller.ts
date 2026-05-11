@@ -1,10 +1,10 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import * as authService from "../services/auth.service";
 import jwt from "jsonwebtoken";
 import { registerSchema } from "../validators/auth.validator";
 
 
-export const registerUser = async (req: Request, res: Response, next: NextFunction) => {
+export const registerUser = async (req: Request, res: Response) => {
 
     try {
         const parsed = registerSchema.parse(req.body)
@@ -13,7 +13,9 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
         res.json(user);
     } catch (error: any) {
 
-        next(error)
+        res.status(400).json({
+            error: error.message
+        })
 
     }
 }
