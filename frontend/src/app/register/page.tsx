@@ -13,8 +13,14 @@ export default function RegisterPage() {
   const [password, setPassword] =
     useState("");
 
-  useEffect(() => {
 
+  const disabled =
+    email.length > 0 &&
+    !email.endsWith("@gmail.com");
+
+
+
+  useEffect(() => {
     const token = localStorage.getItem("accessToken");
 
     if (token) {
@@ -26,8 +32,7 @@ export default function RegisterPage() {
 
   const register = async () => {
 
-
-    await fetch(
+    const res = await fetch(
       "http://localhost:3001/auth/register",
       {
         method: "POST",
@@ -44,8 +49,20 @@ export default function RegisterPage() {
       }
     );
 
+    const data = await res.json();
+
+    if (!res.ok) {
+      // <p>
+      //   Wrong email
+      // </p>
+      console.log(data);
+      return;
+    }
+
     router.push("/login");
   };
+
+ 
 
 
 
@@ -62,6 +79,8 @@ export default function RegisterPage() {
         }
       />
 
+
+
       <br />
 
       <input
@@ -75,9 +94,13 @@ export default function RegisterPage() {
 
       <br />
 
-      <button onClick={register}>
+      <button onClick={register} disabled={disabled} className="disabled:text-amber-300" >
         Register
       </button>
+
+      {email && !email.endsWith("@gmail.com") &&
+        (<p>invalid email</p>)
+      }
 
     </div>
   );

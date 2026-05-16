@@ -7,6 +7,11 @@ export default function LoginPage() {
     const router = useRouter();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const disabled =
+        email.length > 0 &&
+        !email.endsWith("@gmail.com");
+
+
 
     useEffect(() => {
 
@@ -33,11 +38,16 @@ export default function LoginPage() {
 
         const data = await res.json();
 
+        if (!res.ok) {
+            console.log(data);
+            return;
+        }
+
+        router.push("/notes")
+
+
         localStorage.setItem("accessToken", data.accessToken);
         localStorage.setItem("refreshToken", data.refreshToken);
-
-
-
 
 
         router.push("/notes");
@@ -73,9 +83,13 @@ export default function LoginPage() {
 
             <br />
 
-            <button onClick={login}>
+            <button onClick={login} disabled={disabled} className="disabled:text-amber-300" >
                 Login
             </button>
+
+            {email && !email.endsWith("@gmail.com") &&
+                (<p>invalid email</p>)
+            }
 
         </div>
     )

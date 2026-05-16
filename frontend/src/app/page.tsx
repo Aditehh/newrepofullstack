@@ -314,7 +314,7 @@ export default function Home() {
     if (token) {
       router.push("/notes");
     } else {
-      router.push("/login")
+      router.push("/register")
     }
   }, [])
 

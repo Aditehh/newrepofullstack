@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import * as authService from "../services/auth.service";
 import jwt from "jsonwebtoken";
 import { registerSchema } from "../validators/auth.validator";
+import { asyncHandler } from "../utils/asyncHandler";
 
 
 export const registerUser = async (req: Request, res: Response) => {
@@ -16,9 +17,28 @@ export const registerUser = async (req: Request, res: Response) => {
         res.status(400).json({
             error: error.message
         })
-
     }
 }
+
+// export const registerUser =
+//     asyncHandler(
+//         async (req: Request, res: Response) => {
+
+//             const parsed =
+//                 registerSchema.parse(
+//                     req.body
+//                 );
+
+//             const user =
+//                 await authService.register(
+//                     parsed.email,
+//                     parsed.password
+//                 );
+
+//             res.json(user);
+
+//         }
+//     );
 
 
 export const loginUser = async (req: Request, res: Response) => {
