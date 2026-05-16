@@ -17,34 +17,48 @@ export default function NotesPage() {
 
     const router = useRouter();
 
-    const getToken = () =>
-        localStorage.getItem("accessToken");
+    const getToken = () => {
+
+        const token = localStorage.getItem("accessToken");
+
+        if (!token || token === "undefined" || token === "null") {
+            return null;
+        }
+
+        return token;
+    };
 
 
     useEffect(() => {
+
         const token = getToken();
-
-
         if (!token) {
             router.push("/login")
         }
+        fetchNotes();
     }, []);
 
-    useEffect(() => {
 
-        const token = getToken();
+    // useEffect(() => {
 
-        if (token) {
-            fetchNotes();
-        }
+    //     const token = getToken();
+    //     if (token) {
 
-    }, []);
+    //     }
 
+    // }, []);
+
+    // console.log("fetch token is",getToken)
 
 
     const fetchNotes = async () => {
         // const token = localStorage.getItem("token");
         const token = getToken();
+
+        if (!token) {
+            console.log("No token, stopping fetch");
+            return;
+        }
 
         const res = await fetch("http://localhost:3001/notes", {
             headers: {

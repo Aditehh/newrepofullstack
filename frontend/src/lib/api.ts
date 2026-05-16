@@ -34,7 +34,7 @@ export const apiFetch = async (
         },
 
         body: JSON.stringify({
-          refreshToken,
+          refreshToken: localStorage.getitem("refreshToken"),
         }),
       }
     );
