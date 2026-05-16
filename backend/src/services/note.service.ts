@@ -29,7 +29,7 @@ export const updateNote = async (
     content?: string,
     userId?: string
 ) => {
-    
+
     const noteId = Array.isArray(id) ? id[0] : id;
 
     return await prisma.note.update({

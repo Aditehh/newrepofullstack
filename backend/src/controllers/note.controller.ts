@@ -3,11 +3,13 @@ import * as noteService from "../services/note.service"
 import { createNoteSchema, updateNoteSchema } from "../validators/note.validator";
 
 
+
 export const getAllNotes = async (req: Request, res: Response) => {
     const userId = (req as any).userId;
     const notes = await noteService.getNotes(userId);
     res.json(notes);
 }
+
 
 export const createNewNote = async (req: Request, res: Response) => {
 
