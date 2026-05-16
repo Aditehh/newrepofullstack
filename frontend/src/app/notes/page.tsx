@@ -35,7 +35,7 @@ export default function NotesPage() {
         if (!token) {
             router.push("/login")
         }
-        fetchNotes();
+        fetchNotes()
     }, []);
 
 
