@@ -21,7 +21,7 @@ export const errorHandler = (
       message: "Validation failed",
       errors: err.issues,
     });
-    
+
   }
 
 
@@ -34,12 +34,18 @@ export const errorHandler = (
   }
 
   // Default error
+  // res.status(err.statusCode || 500).json({
+  //   success: false,
+  //   message:
+  //     err.message ||
+  //     "Internal Server Error",
+  // });
+
   res.status(err.statusCode || 500).json({
     success: false,
     message:
-      err.message ||
-      "Internal Server Error",
-  });
+      err.message || "Internal server Error",
+  })
 };
 
 // normal middleware has (req,res,next) but error middleware has (err, req,res,next)
