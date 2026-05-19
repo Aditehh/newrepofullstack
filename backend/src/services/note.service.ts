@@ -3,9 +3,38 @@
 import { prisma } from "../db";
 
 
-export const getNotes = async (userId: string) => {
+export const getNotes = async (userId: string,
+    page: number,
+    limit: number,
+    search: string
+) => {
+
+    const skip =
+        (page - 1) * limit;
+
     return await prisma.note.findMany({
-        where: { userId },
+        where: {
+            userId,
+            OR: [
+                {
+                    title: {
+                        contains: search,
+                        mode: "insensitive",
+                    },
+                },
+
+                {
+                    content: {
+                        contains: search,
+                        mode: "insensitive",
+                    },
+                },
+            ],
+        },
+
+        skip,
+        take: limit,
+
         orderBy: { createdAt: "desc" },
     });
 };
