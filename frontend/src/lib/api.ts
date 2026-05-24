@@ -23,6 +23,7 @@ export const apiFetch = async (
     const refreshToken =
       localStorage.getItem("refreshToken");
 
+
     // REQUEST NEW ACCESS TOKEN
     const refreshRes = await fetch(
       "http://localhost:3001/auth/refresh",
@@ -34,7 +35,7 @@ export const apiFetch = async (
         },
 
         body: JSON.stringify({
-          refreshToken: localStorage.getitem("refreshToken"),
+          refreshToken: localStorage.getItem("refreshToken"),
         }),
       }
     );

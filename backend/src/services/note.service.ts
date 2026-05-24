@@ -32,7 +32,7 @@ export const getNotes = async (userId: string,
             ],
         },
 
-        skip,
+        skip, // skip belongs on the service because it is a database and business logic and not a HTTP logic my nigga bitch
         take: limit,
 
         orderBy: { createdAt: "desc" },

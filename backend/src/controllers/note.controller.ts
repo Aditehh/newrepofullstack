@@ -1,26 +1,36 @@
 import { Request, Response } from "express";
 import * as noteService from "../services/note.service"
 import { createNoteSchema, updateNoteSchema } from "../validators/note.validator";
+import AppError from "../utils/AppError";
 
 
 
 export const getAllNotes = async (req: Request, res: Response) => {
 
-    const userId = (req as any).userId;
+    try {
 
-    const page = Number(req.query.page) || 1;
+        const userId = (req as any).userId;
 
-    const limit = Number(req.query.limit) || 10;
+        const page = Number(req.query.page) || 1;
 
-    const search = String(req.query.search) || ";"
+        const limit = Number(req.query.limit) || 10;
 
-    const notes = await noteService.getNotes(
-        userId,
-        page,
-        limit,
-        search
-    );
-    res.json(notes);
+        const search = String(req.query.search) || "";
+
+        const notes = await noteService.getNotes(
+            userId,
+            page,
+            limit,
+            search
+        );
+        res.json(notes);
+    } catch (error) {
+        console.log(error);       
+        res.status(500).json({
+            success: false,
+            message: String(error)
+        })
+    }
 }
 
 
