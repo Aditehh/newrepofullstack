@@ -14,7 +14,8 @@ export default function NotesPage() {
     const [editTitle, setEditTitle] = useState("");
     const [editContent, setEditContent] = useState("");
     const [search, setSearch] = useState("");
-
+    const [debouncedSearch, setDebouncedSearch] = useState("")
+    const [currentPage, setCurrentPage] = useState(1)
 
 
 
@@ -50,6 +51,16 @@ export default function NotesPage() {
     }, []);
 
 
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebouncedSearch(search)
+        }, 400);
+        return () => {
+            clearTimeout(handler)
+        }
+    }, [search])
+
+
     // useEffect(() => {
 
     //     const token = getToken();
@@ -71,7 +82,7 @@ export default function NotesPage() {
             return;
         }
 
-        const res = await apiFetch(`http://localhost:3001/notes?page=${page}&limit=${limit}&search=${search}`, {
+        const res = await apiFetch(`http://localhost:3001/notes?page=${page}&limit=${limit}&search=${debouncedSearch}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -207,71 +218,213 @@ export default function NotesPage() {
 
     return (
 
-        <div>
-            <h1>Notes</h1>
+        // <div>
+        //     <h1>Notes</h1>
 
-            <div>
-                <input
-                    placeholder="Title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                />
-                <br />
-                <textarea
-                    placeholder="Content"
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                />
-                <br />
-                <button onClick={createNote}>Add Note</button>
-            </div>
+        //     <div>
+        //         <input
+        //             placeholder="Title"
+        //             value={title}
+        //             onChange={(e) => setTitle(e.target.value)}
+        //         />
+        //         <br />
+        //         <textarea
+        //             placeholder="Content"
+        //             value={content}
+        //             onChange={(e) => setContent(e.target.value)}
+        //         />
+        //         <br />
+        //         <button onClick={createNote}>Add Note</button>
+        //     </div>
 
-            <hr />
+        //     <hr />
 
 
-            {editingId && (
-                <div style={{ marginBottom: 20 }}>
-                    <h2>Edit Note</h2>
+        //     {editingId && (
+        //         <div style={{ marginBottom: 20 }}>
+        //             <h2>Edit Note</h2>
+
+        //             <input
+        //                 value={editTitle}
+        //                 onChange={(e) => setEditTitle(e.target.value)}
+        //                 placeholder="Title"
+        //             />
+
+        //             <br />
+        //             <textarea value={editContent} onChange={(e) => setEditContent(e.target.value)} placeholder="Content" />
+        //             <br />
+        //             <button onClick={updateNote}>
+
+        //                 Save Changes          </button>
+
+        //             <button onClick={() => setEditingId(null)}>
+        //                 Cancel
+        //             </button>
+        //         </div>
+        //     )}
+
+        //     <div>
+        //         <h1>search for your notes</h1>
+        //         <input type="text"
+        //             placeholder='Search notes'
+        //             value={search}
+        //             onChange={(e) => setSearch(e.target.value)}
+        //         />
+        //         <button onClick={fetchNotes}>search note</button>
+        //     </div>
+
+        //     {notes.map((note) => (
+        //         <div key={note.id}>
+        //             <h2>{note.title}</h2>
+        //             <p>{note.content}</p>
+        //             <p>
+        //                 <button onClick={() => deleteNote(note.id)}>Delete Note</button>
+        //             </p>
+        //             <button onClick={() => startEdit(note)}>edit</button>
+        //         </div>
+        //     ))};
+        // </div>
+
+        <div className="min-h-screen bg-gray-100 py-10 px-4">
+            <div className="max-w-5xl mx-auto bg-white shadow-xl rounded-2xl p-8">
+
+                {/* Header */}
+                <div className="flex items-center justify-between mb-8">
+                    <h1 className="text-4xl font-bold text-gray-800">📝 Notes App</h1>
+
+                    <div className="flex gap-2">
+                        <input
+                            type="text"
+                            placeholder="Search notes..."
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+
+                        <button
+                            onClick={fetchNotes}
+                            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition"
+                        >
+                            Search
+                        </button>
+                    </div>
+                </div>
+
+                {/* Add Note */}
+                <div className="bg-gray-50 p-6 rounded-xl shadow-sm mb-8">
+                    <h2 className="text-2xl font-semibold mb-4 text-gray-700">
+                        Add New Note
+                    </h2>
 
                     <input
-                        value={editTitle}
-                        onChange={(e) => setEditTitle(e.target.value)}
                         placeholder="Title"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        className="w-full border border-gray-300 rounded-lg px-4 py-3 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
 
-                    <br />
-                    <textarea value={editContent} onChange={(e) => setEditContent(e.target.value)} placeholder="Content" />
-                    <br />
-                    <button onClick={updateNote}>
+                    <textarea
+                        placeholder="Write your note..."
+                        value={content}
+                        onChange={(e) => setContent(e.target.value)}
+                        // rows="5"
+                        className="w-full border border-gray-300 rounded-lg px-4 py-3 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
 
-                        Save Changes          </button>
-
-                    <button onClick={() => setEditingId(null)}>
-                        Cancel
+                    <button
+                        onClick={createNote}
+                        className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition"
+                    >
+                        Add Note
                     </button>
                 </div>
-            )}
 
-            <div>
-                <h1>search for your notes</h1>
-                <input type="text"
-                    placeholder='Search notes'
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                />
-                <button onClick={fetchNotes}>search note</button>
-            </div>
+                {/* Edit Note */}
+                {editingId && (
+                    <div className="bg-yellow-50 border border-yellow-200 p-6 rounded-xl shadow-sm mb-8">
+                        <h2 className="text-2xl font-semibold mb-4 text-gray-700">
+                            Edit Note
+                        </h2>
 
-            {notes.map((note) => (
-                <div key={note.id}>
-                    <h2>{note.title}</h2>
-                    <p>{note.content}</p>
-                    <p>
-                        <button onClick={() => deleteNote(note.id)}>Delete Note</button>
-                    </p>
-                    <button onClick={() => startEdit(note)}>edit</button>
+                        <input
+                            value={editTitle}
+                            onChange={(e) => setEditTitle(e.target.value)}
+                            placeholder="Title"
+                            className="w-full border border-gray-300 rounded-lg px-4 py-3 mb-4 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                        />
+
+                        <textarea
+                            value={editContent}
+                            onChange={(e) => setEditContent(e.target.value)}
+                            placeholder="Content"
+                            // rows="5"
+                            className="w-full border border-gray-300 rounded-lg px-4 py-3 mb-4 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                        />
+
+                        <div className="flex gap-3">
+                            <button
+                                onClick={updateNote}
+                                className="bg-yellow-500 hover:bg-yellow-600 text-white px-5 py-2 rounded-lg transition"
+                            >
+                                Save Changes
+                            </button>
+
+                            <button
+                                onClick={() => setEditingId(null)}
+                                className="bg-gray-400 hover:bg-gray-500 text-white px-5 py-2 rounded-lg transition"
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                )}
+
+                {/* Notes List */}
+                <div>
+                    <h2 className="text-3xl font-bold text-gray-800 mb-6">
+                        Your Notes
+                    </h2>
+
+                    {notes.length === 0 ? (
+                        <p className="text-gray-500 text-center">No notes found.</p>
+                    ) : (
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {notes.map((note) => (
+                                <div
+                                    key={note.id}
+                                    className="bg-white border border-gray-200 rounded-xl shadow-md p-5 hover:shadow-xl transition"
+                                >
+                                    <h3 className="text-xl font-bold text-gray-800 mb-3">
+                                        {note.title}
+                                    </h3>
+
+                                    <p className="text-gray-600 mb-5 whitespace-pre-line">
+                                        {note.content}
+                                    </p>
+
+                                    <div className="flex justify-between">
+                                        <button
+                                            onClick={() => startEdit(note)}
+                                            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition"
+                                        >
+                                            Edit
+                                        </button>
+
+                                        <button
+                                            onClick={() => deleteNote(note.id)}
+                                            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition"
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        
+                    )}
                 </div>
-            ))};
+            </div>
         </div>
     )
 }
+    
