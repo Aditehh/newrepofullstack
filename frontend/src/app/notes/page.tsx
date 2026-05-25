@@ -3,6 +3,8 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { apiFetch } from '@/lib/api';
+import { useSearchParams } from 'next/navigation';
+
 
 export default function NotesPage() {
     const [notes, setNotes] = useState<any[]>([]);
@@ -16,6 +18,13 @@ export default function NotesPage() {
 
 
     const router = useRouter();
+    const searchParams = useSearchParams();
+
+    const page =
+        searchParams.get("page") || "1";
+
+    const limit =
+        searchParams.get("limit") || "10";
 
     const getToken = () => {
 
@@ -60,7 +69,7 @@ export default function NotesPage() {
             return;
         }
 
-        const res = await fetch("http://localhost:3001/notes", {
+        const res = await fetch(`http://localhost:3001/notes?page=${page}&limit=${limit}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
