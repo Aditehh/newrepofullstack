@@ -16,21 +16,25 @@ export const getNotes = async (
     return await prisma.note.findMany({
         where: {
             userId,
-            // OR: [
-            //     {
-            //         title: {
-            //             contains: search,
-            //             mode: "insensitive",
-            //         },
-            //     },
 
-            //     {
-            //         content: {
-            //             contains: search,
-            //             mode: "insensitive",
-            //         },
-            //     },
-            // ],
+            ...(search && {
+
+                OR: [
+                    {
+                        title: {
+                            contains: search,
+                            mode: "insensitive",
+                        },
+                    },
+
+                    {
+                        content: {
+                            contains: search,
+                            mode: "insensitive",
+                        },
+                    },
+                ],
+            }),
         },
 
         skip, // skip belongs on the service because it is a database and business logic and not a HTTP logic my nigga bitch

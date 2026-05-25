@@ -13,12 +13,14 @@ export default function NotesPage() {
     const [editingId, setEditingId] = useState<string | null>(null);
     const [editTitle, setEditTitle] = useState("");
     const [editContent, setEditContent] = useState("");
+    const [search, setSearch] = useState("");
 
 
 
 
     const router = useRouter();
     const searchParams = useSearchParams();
+
 
     const page =
         searchParams.get("page") || "1";
@@ -69,7 +71,7 @@ export default function NotesPage() {
             return;
         }
 
-        const res = await fetch(`http://localhost:3001/notes?page=${page}&limit=${limit}`, {
+        const res = await apiFetch(`http://localhost:3001/notes?page=${page}&limit=${limit}&search=${search}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -250,6 +252,15 @@ export default function NotesPage() {
                 </div>
             )}
 
+            <div>
+                <h1>search for your notes</h1>
+                <input type="text"
+                    placeholder='Search notes'
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                />
+                <button onClick={fetchNotes}>search note</button>
+            </div>
 
             {notes.map((note) => (
                 <div key={note.id}>
