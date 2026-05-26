@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { apiFetch } from '@/lib/api';
 import { useSearchParams } from 'next/navigation';
+import { Skeleton } from '@/components/ui/skeleton';
 
 
 export default function NotesPage() {
@@ -15,7 +16,9 @@ export default function NotesPage() {
     const [editContent, setEditContent] = useState("");
     const [search, setSearch] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState("")
-    const [currentPage, setCurrentPage] = useState(1)
+    // const [currentPage, setCurrentPage] = useState(1);
+    const [Page, setPage] = useState(1)
+    const [loading, setLoading] = useState(false);
 
 
 
@@ -47,8 +50,8 @@ export default function NotesPage() {
         if (!token) {
             router.push("/login")
         }
-        fetchNotes()
-    }, []);
+        fetchNotes();
+    }, [page, debouncedSearch]);
 
 
     useEffect(() => {
@@ -74,27 +77,33 @@ export default function NotesPage() {
 
 
     const fetchNotes = async () => {
-        // const token = localStorage.getItem("token");
-        const token = getToken();
+        try {
+            setLoading(true)
 
-        if (!token) {
-            console.log("No token, stopping fetch");
-            return;
-        }
+            // const token = localStorage.getItem("token");
+            const token = getToken();
 
-        const res = await apiFetch(`http://localhost:3001/notes?page=${page}&limit=${limit}&search=${debouncedSearch}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
+            if (!token) {
+                console.log("No token, stopping fetch");
+                return;
             }
-        });
-        const data = await res.json();
 
-        if (Array.isArray(data)) {
-            setNotes(data);
-        }
-        else {
-            console.log("Error response", data);
-            setNotes([])
+            const res = await apiFetch(`http://localhost:3001/notes?page=${page}&limit=${limit}&search=${debouncedSearch}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            const data = await res.json();
+
+            if (Array.isArray(data)) {
+                setNotes(data);
+            }
+            else {
+                console.log("Error response", data);
+                setNotes([])
+            }
+        } finally {
+            setLoading(false)
         }
         // setNotes(data);
     };
@@ -384,47 +393,69 @@ export default function NotesPage() {
                     <h2 className="text-3xl font-bold text-gray-800 mb-6">
                         Your Notes
                     </h2>
-
-                    {notes.length === 0 ? (
-                        <p className="text-gray-500 text-center">No notes found.</p>
+                    {loading ? (
+                        <Skeleton className='h-10 w-full' />
                     ) : (
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {notes.map((note) => (
-                                <div
-                                    key={note.id}
-                                    className="bg-white border border-gray-200 rounded-xl shadow-md p-5 hover:shadow-xl transition"
-                                >
-                                    <h3 className="text-xl font-bold text-gray-800 mb-3">
-                                        {note.title}
-                                    </h3>
+                        notes.length === 0 ? (
+                            <p className="text-gray-500 text-center">
+                                No notes found.
+                            </p>
+                        ) : (
+                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {notes.map((note) => (
+                                    <div
+                                        key={note.id}
+                                        className="bg-white border border-gray-200 rounded-xl shadow-md p-5 hover:shadow-xl transition"
+                                    >
+                                        <h3 className="text-xl font-bold text-gray-800 mb-3">
+                                            {note.title}
+                                        </h3>
 
-                                    <p className="text-gray-600 mb-5 whitespace-pre-line">
-                                        {note.content}
-                                    </p>
+                                        <p className="text-gray-600 mb-5 whitespace-pre-line">
+                                            {note.content}
+                                        </p>
 
-                                    <div className="flex justify-between">
-                                        <button
-                                            onClick={() => startEdit(note)}
-                                            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition"
-                                        >
-                                            Edit
-                                        </button>
+                                        <div className="flex justify-between">
+                                            <button
+                                                onClick={() => startEdit(note)}
+                                                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition"
+                                            >
+                                                Edit
+                                            </button>
 
-                                        <button
-                                            onClick={() => deleteNote(note.id)}
-                                            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition"
-                                        >
-                                            Delete
-                                        </button>
+                                            <button
+                                                onClick={() => deleteNote(note.id)}
+                                                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition"
+                                            >
+                                                Delete
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
-                        </div>
-                        
+                                ))}
+                            </div>
+                        )
                     )}
+                    <div style={{ marginTop: 20 }}>
+                        <button
+                            onClick={() => setPage((p) => Math.max(p - 1, 1))}
+                            disabled={Page === 1}
+                        >
+                            Prev
+                        </button>
+
+                        <span style={{ margin: "0 10px" }}>
+                            Page {page}
+                        </span>
+
+                        <button
+                            onClick={() => setPage((p) => p + 1)}
+                        >
+                            Next
+                        </button>
+                    </div>
+
                 </div>
             </div>
         </div>
     )
 }
-    
