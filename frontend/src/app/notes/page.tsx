@@ -17,20 +17,22 @@ export default function NotesPage() {
     const [search, setSearch] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState("")
     // const [currentPage, setCurrentPage] = useState(1);
-    const [Page, setPage] = useState(1)
+    const [page, setPage] = useState(1)
     const [loading, setLoading] = useState(false);
 
 
 
     const router = useRouter();
-    const searchParams = useSearchParams();
+    // const searchParams = useSearchParams();
 
 
-    const page =
-        searchParams.get("page") || "1";
+    // const page =
+    //     searchParams.get("page") || "1";
 
-    const limit =
-        searchParams.get("limit") || "10";
+    // const limit =
+    //     searchParams.get("limit") || "10";
+
+    const limit = 10;
 
     const getToken = () => {
 
@@ -437,8 +439,10 @@ export default function NotesPage() {
                     )}
                     <div style={{ marginTop: 20 }}>
                         <button
-                            onClick={() => setPage((p) => Math.max(p - 1, 1))}
-                            disabled={Page === 1}
+                            onClick={() =>
+                                setPage((p) => Math.max(p - 1, 1))
+                            }
+                            disabled={page === 1}
                         >
                             Prev
                         </button>
@@ -448,13 +452,13 @@ export default function NotesPage() {
                         </span>
 
                         <button
-                            onClick={() => setPage((p) => p + 1)}
+                            onClick={() =>
+                                setPage((p) => p + 1)
+                            }
                         >
                             Next
                         </button>
-                    </div>
-
-                </div>
+                    </div>                </div>
             </div>
         </div>
     )
