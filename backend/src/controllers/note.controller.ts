@@ -12,6 +12,7 @@ export const getAllNotes = async (req: Request, res: Response) => {
         const userId = (req as any).userId;
 
         const page = Number(req.query.page) || 1;
+        console.log("REQ PAGE:", page);
 
         const limit = Number(req.query.limit) || 10;
 
@@ -25,7 +26,7 @@ export const getAllNotes = async (req: Request, res: Response) => {
         );
         res.json(notes);
     } catch (error) {
-        console.log(error);       
+        console.log(error);
         res.status(500).json({
             success: false,
             message: String(error)

@@ -1,9 +1,8 @@
 "use client"
 import { useState } from 'react'
 import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 import { apiFetch } from '@/lib/api';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
 
 
@@ -17,22 +16,24 @@ export default function NotesPage() {
     const [search, setSearch] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState("")
     // const [currentPage, setCurrentPage] = useState(1);
-    const [page, setPage] = useState(1)
+    // const [page, setPage] = useState(1)
     const [loading, setLoading] = useState(false);
 
 
+    // console.log("CURRENT PAGE:", page);
+
 
     const router = useRouter();
-    // const searchParams = useSearchParams();
+    const searchParams = useSearchParams();
 
 
-    // const page =
-    //     searchParams.get("page") || "1";
+    const page =
+        Number(searchParams.get("page") || "1");
 
-    // const limit =
-    //     searchParams.get("limit") || "10";
+    const limit =
+        searchParams.get("limit") || "10";
 
-    const limit = 10;
+    // const limit = 10;
 
     const getToken = () => {
 
@@ -438,26 +439,42 @@ export default function NotesPage() {
                         )
                     )}
                     <div style={{ marginTop: 20 }}>
-                        <button
+                        {/* <button
                             onClick={() =>
                                 setPage((p) => Math.max(p - 1, 1))
                             }
                             disabled={page === 1}
                         >
                             Prev
-                        </button>
+                        </button> */}
 
+                        <button
+                            onClick={() =>
+                                router.push(`/notes?page=${Math.max(page - 1, 1)}`)
+                            }
+                        >
+                            Prev
+                        </button>
                         <span style={{ margin: "0 10px" }}>
                             Page {page}
                         </span>
-
                         <button
+                            onClick={() =>
+                                router.push(`/notes?page=${page + 1}`)
+                            }
+                        >
+                            Next
+                        </button>
+
+
+
+                        {/* <button
                             onClick={() =>
                                 setPage((p) => p + 1)
                             }
                         >
                             Next
-                        </button>
+                        </button> */}
                     </div>                </div>
             </div>
         </div>
