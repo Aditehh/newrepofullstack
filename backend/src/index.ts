@@ -82,10 +82,13 @@ import noteRoutes from "./routes/note.routes"
 import "dotenv/config"
 import { errorHandler } from "./middleware/error.middleware";
 import authRoutes from "./routes/auth.routes";
+import { globalLimiter } from "./middleware/rateLimit.middleware";
+
 
 
 const app = express();
-
+app.use(express.json());
+app.use(globalLimiter);
 app.use(cors());
 app.use(express.json());
 app.use("/auth", authRoutes)
