@@ -185,6 +185,7 @@ Next upgrades in correct order:
 
 /////////////////////////////////////////////////////////////////
 Phase 2 Checklist (finish in this order)
+fuck(this is the part were workinig on rn)
 1. Validation (next)
 
 Estimated: 2–3 days

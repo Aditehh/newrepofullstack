@@ -8,10 +8,12 @@ import {
 
 import { authMiddleware } from "../middleware/auth.middleware";
 import { notesLimiter } from "../middleware/rateLimit.middleware";
+import { validate } from "../middleware/validate.middleware";
+import { createNoteSchema } from "../validators/note.validator";
 
 const router = express.Router();
 
-router.get("/", authMiddleware, getAllNotes);
+router.get("/", authMiddleware, validate(createNoteSchema), getAllNotes);
 router.post("/", authMiddleware, createNewNote);
 router.put("/:id", authMiddleware, updateExistingNote);
 router.delete("/:id", authMiddleware, deleteExistingNote);
