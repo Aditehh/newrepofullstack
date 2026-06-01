@@ -4,7 +4,7 @@ export const globalLimiter = ratelimit({
     windowMs:
         15 * 60 * 1000, // this shit means that request history resets every 15 minutes
     max:
-        100, // inside that 15 mins only 100 requests are allowed 
+        4, // inside that 15 mins only 100 requests are allowed 
 
     message: {
         success: false,
@@ -18,7 +18,7 @@ export const globalLimiter = ratelimit({
 
 export const authLimiter = ratelimit({
     windowMs: 15 * 60 * 1000,
-    max: 5,
+    max: 2,
     message: {
         success: false,
         message: "Too many login attempts"

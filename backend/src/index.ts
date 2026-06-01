@@ -87,8 +87,11 @@ import { globalLimiter } from "./middleware/rateLimit.middleware";
 
 
 const app = express();
+
 app.use(express.json());
+
 app.use(globalLimiter);
+
 app.use(cors());
 app.use(express.json());
 app.use("/auth", authRoutes)
