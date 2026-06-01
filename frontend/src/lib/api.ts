@@ -7,12 +7,12 @@ export const apiFetch = async (
     localStorage.getItem("accessToken");
 
   // FIRST REQUEST
+  
   let res = await fetch(url, {
-    ...options,
 
+    ...options,
     headers: {
       ...options.headers,
-
       Authorization: `Bearer ${accessToken}`,
     },
   });
