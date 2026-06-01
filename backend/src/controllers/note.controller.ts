@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import * as noteService from "../services/note.service"
 import { createNoteSchema, updateNoteSchema } from "../validators/note.validator";
 import AppError from "../utils/AppError";
+import { logger } from "../utils/logger";
 
 
 
@@ -46,6 +47,7 @@ export const createNewNote = async (req: Request, res: Response) => {
     );
 
     res.status(201).json(note);
+    logger.info("Note created")
 
 }
 
@@ -64,6 +66,7 @@ export const updateExistingNote = async (req: Request, res: Response) => {
     );
 
     res.status(201).json(updated);
+    logger.info("Note updated")
 
 
 };
@@ -75,6 +78,7 @@ export const deleteExistingNote = async (req: Request, res: Response) => {
 
     const deleted = await noteService.deleteNote(id, userId);
     res.json(deleted);
+    logger.info("Note deleted")
 };
 
 

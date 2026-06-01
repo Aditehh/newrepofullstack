@@ -1,6 +1,7 @@
 //business logic
 //talks to the database and things like that ig
 import { prisma } from "../db";
+import { logger } from "../utils/logger";
 
 
 export const getNotes = async (

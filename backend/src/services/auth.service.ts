@@ -2,6 +2,7 @@ import { prisma } from "../db";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import AppError from "../utils/AppError";
+import { logger } from "../utils/logger";
 
 
 

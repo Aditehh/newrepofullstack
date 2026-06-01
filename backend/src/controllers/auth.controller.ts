@@ -3,16 +3,36 @@ import * as authService from "../services/auth.service";
 import jwt from "jsonwebtoken";
 import { registerSchema } from "../validators/auth.validator";
 import { asyncHandler } from "../utils/asyncHandler";
+import { logger } from "../utils/logger";
 
 
 export const registerUser = async (req: Request, res: Response) => {
 
     try {
-        const parsed = registerSchema.parse(req.body)
+        logger.info("Register request received", {
+            body: req.body,
+        });
+
+        const parsed = registerSchema.parse(req.body);
+
+        logger.info("Validation successful", {
+            email: parsed.email,
+        });
 
         const user = await authService.register(parsed.email, parsed.password);
-        res.json(user);
+
+        logger.info("User registered successfully", {
+            userId: user.id,
+            email: user.email
+        });
+
+        return res.status(201).json(user);
     } catch (error: any) {
+
+        logger.error("Register failed", {
+            error: error.message,
+            body: req.body,
+        })
 
         res.status(400).json({
             error: error.message
