@@ -9,7 +9,7 @@ import { logger } from "../utils/logger";
 export const getAllNotes = async (req: Request, res: Response) => {
 
     try {
-        logger.info("")
+        logger.info({}, "")
         const userId = (req as any).userId;
 
         const page = Number(req.query.page) || 1;
