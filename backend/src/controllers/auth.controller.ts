@@ -9,30 +9,31 @@ import { logger } from "../utils/logger";
 export const registerUser = async (req: Request, res: Response) => {
 
     try {
-        logger.info("Register request received", {
-            body: req.body,
-        });
+        logger.info({
+            body: req.body
+        }, "Register request received");
 
         const parsed = registerSchema.parse(req.body);
 
-        logger.info("Validation successful", {
+        logger.info({
             email: parsed.email,
-        });
+        }, "Validation successful",);
 
         const user = await authService.register(parsed.email, parsed.password);
 
-        logger.info("User registered successfully", {
+        logger.info({
             userId: user.id,
             email: user.email
-        });
+        }, "User registered successfully",
+        );
 
         return res.status(201).json(user);
     } catch (error: any) {
 
-        logger.error("Register failed", {
+        logger.error({
             error: error.message,
             body: req.body,
-        })
+        }, "Register failed",)
 
         res.status(400).json({
             error: error.message
