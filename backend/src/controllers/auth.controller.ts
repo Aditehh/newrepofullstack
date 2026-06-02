@@ -63,10 +63,11 @@ export const registerUser = async (req: Request, res: Response) => {
 
 
 export const loginUser = async (req: Request, res: Response) => {
-    const { email, password } = req.body;
-    const result = await authService.login(email, password);
-
-    res.json(result);
+   const { email, password } = req.body;
+       const result = await authService.login(email, password);
+       
+       res.json(result);
+    
 }
 
 export const refreshAccessToken = async (
