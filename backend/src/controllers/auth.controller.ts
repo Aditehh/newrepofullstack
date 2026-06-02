@@ -63,11 +63,37 @@ export const registerUser = async (req: Request, res: Response) => {
 
 
 export const loginUser = async (req: Request, res: Response) => {
-   const { email, password } = req.body;
-       const result = await authService.login(email, password);
-       
-       res.json(result);
-    
+    try {
+
+        logger.info({
+            email: req.body.email
+        }, "login request received");
+
+        const { email, password } = req.body;
+
+
+        const result = await authService.login(email, password);
+
+        logger.info({
+            email: result.email
+        }, "User loggedin successfully",
+        );
+
+        res.json(result);
+
+    } catch (error) {
+        logger.error({
+            error
+        },
+            "Login failed"
+        );
+
+        // res.status(401).json({
+        //     message: "Login failed"
+        // })
+        throw error;
+    }
+
 }
 
 export const refreshAccessToken = async (

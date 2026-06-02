@@ -80,5 +80,5 @@ export const login = async (email: string, password: string) => {
   //   { expiresIn: "1d" }
   // );
 
-  return { accessToken, refreshToken };
+  return { accessToken, refreshToken, email };
 };
