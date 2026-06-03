@@ -13,8 +13,8 @@ import { createNoteSchema } from "../validators/note.validator";
 
 const router = express.Router();
 
-router.get("/", authMiddleware, validate(createNoteSchema), getAllNotes);
-router.post("/", authMiddleware, createNewNote);
+router.get("/", authMiddleware, getAllNotes);
+router.post("/", authMiddleware, validate(createNoteSchema), createNewNote);
 router.put("/:id", authMiddleware, updateExistingNote);
 router.delete("/:id", authMiddleware, deleteExistingNote);
 
