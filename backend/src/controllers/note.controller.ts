@@ -9,11 +9,12 @@ import { logger } from "../utils/logger";
 export const getAllNotes = async (req: Request, res: Response) => {
 
     try {
-        logger.info({}, "")
+        logger.info({ note: (req as any).body }, "request received")
         const userId = (req as any).userId;
 
         const page = Number(req.query.page) || 1;
-        console.log("REQ PAGE:", page);
+        // console.log("REQ PAGE:", page);
+        logger.info({ page: req.query.page }, "opened page number")
 
         const limit = Number(req.query.limit) || 10;
 
@@ -25,9 +26,13 @@ export const getAllNotes = async (req: Request, res: Response) => {
             limit,
             search
         );
+        logger.info({ userId, page, count: notes.length }, "response note page generated")
         res.json(notes);
     } catch (error) {
         console.log(error);
+        logger.error({
+            error
+        }, "note request failed")
         res.status(500).json({
             success: false,
             message: String(error)
@@ -37,36 +42,67 @@ export const getAllNotes = async (req: Request, res: Response) => {
 
 
 export const createNewNote = async (req: Request, res: Response) => {
+    try {
 
-    const parsed = createNoteSchema.parse(req.body)
-    const userId = (req as any).userId;
-    const note = await noteService.createNote(
-        parsed.title,
-        parsed.content,
-        userId
-    );
+        const parsed = createNoteSchema.parse(req.body)
+        const userId = (req as any).userId;
+        logger.info({ userId }, "create note request reveived")
+        const result = await noteService.createNote(
+            parsed.title,
+            parsed.content,
+            userId
+        );
+        logger.info({
+            noteId: result.id,
+            title: result.title,
+            content: result.content,
+            userId
+        },
+            "note created")
 
-    res.status(201).json(note);
-    logger.info("Note created")
+        res.status(201).json(result);
+    } catch (error) {
+        logger.error({
+            error
+        }, "note creation failed")
+
+        res.status(400).json({
+            success: false,
+            message: String(error)
+        })
+    }
 
 }
 
 export const updateExistingNote = async (req: Request, res: Response) => {
+    try {
 
-    const userId = (req as any).userId;
-    const { id } = req.params;
-    const parsed = updateNoteSchema.parse(req.body);
+        const userId = (req as any).userId;
+        logger.info({ userId }, "update request received")
+        const { id } = req.params;
+        const parsed = updateNoteSchema.parse(req.body);
 
-    const updated = await noteService.updateNote(
-        id,
-        parsed.title,
-        parsed.content,
-        userId
+        const updated = await noteService.updateNote(
+            id,
+            parsed.title,
+            parsed.content,
+            userId
 
-    );
+        );
+        logger.info({
+            noteId: id,
+            title: updated.title,
+            userId
+        }, "update note done")
 
-    res.status(201).json(updated);
-    logger.info("Note updated")
+        res.status(201).json(updated);
+    } catch (error) {
+        logger.error({ error }, "update note failed");
+        res.status(400).json({
+            success: false,
+            message: String(error)
+        })
+    }
 
 
 };
