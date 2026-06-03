@@ -15,7 +15,7 @@ const router = express.Router();
 
 router.get("/", authMiddleware, getAllNotes);
 router.post("/", authMiddleware, validate(createNoteSchema), createNewNote);
-router.put("/:id", authMiddleware, updateExistingNote);
+router.put("/:id", authMiddleware, validate(createNoteSchema), updateExistingNote);
 router.delete("/:id", authMiddleware, deleteExistingNote);
 
 
