@@ -2,8 +2,11 @@ import request from "supertest";
 import app from "../app";
 import { describe, it, expect } from "vitest";
 
+
 describe("Auth API", () => {
     it("should register a user", async () => {
+
+        console.log("database url is ",process.env.DATABASE_URL);
 
         const response = await request(app)
             .post("/auth/register")
@@ -13,7 +16,7 @@ describe("Auth API", () => {
             });
 
         console.log(response.body);
-        expect(response.status).toBe(200);
+        expect(response.status).toBe(201);
 
     })
 })

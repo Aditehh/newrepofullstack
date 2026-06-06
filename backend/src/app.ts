@@ -2,7 +2,7 @@
 import express from "express";
 import cors from "cors";
 import noteRoutes from "./routes/note.routes"
-import "dotenv/config"
+import "dotenv/config";
 import { errorHandler } from "./middleware/error.middleware";
 import authRoutes from "./routes/auth.routes";
 import { globalLimiter } from "./middleware/rateLimit.middleware";
