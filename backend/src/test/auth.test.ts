@@ -115,6 +115,48 @@ describe("Auth API", () => {
         console.log("should reject wrong password's response body is", response.body)
         expect(response.status).toBe(401);
 
+    });
+
+    it("should reject non-existent user ie login without registering first", async () => {
+        const response = await request(app)
+            .post("/auth/login")
+            .send({
+                email: `test${Date.now()}@example.com`,
+                password: "123456"
+            });
+
+        console.log(response.body)
+        expect(response.status).toBe(404);
+    });
+
+    it("should reject invalid email format on login", async () => {
+        const response = await request(app)
+            .post("/auth/login")
+            .send({
+                email: `test${Date.now()}`,
+                password: "12345678"
+            });
+        console.log(response.body);
+        expect(response.status).toBe(400);
+    });
+
+    it("should reject missing password", async () => {
+        const email= `test${Date.now()}@example.com`
+        await request(app) 
+            .post("/auth/register")
+            .send({
+                email,
+                password: "123456"
+            });
+
+        const response = await request(app)
+            .post("/auth/login")
+            .send({
+                email,
+                password: undefined
+            });
+
+        expect(response.status).toBe()
     })
 })
 
