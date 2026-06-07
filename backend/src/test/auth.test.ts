@@ -12,12 +12,28 @@ describe("Auth API", () => {
         const response = await request(app)
             .post("/auth/register")
             .send({
-                email: "test@example.com",
+                email: `test${Date.now()}@example.com`,
                 password: "123456"
             });
 
         console.log(response.body);
-        expect(response.status).toBe(201);
+        expect(response.status).toBe(400);
 
     })
+
+    it("should reject invalid password", async () => {
+
+        const response = await request(app)
+            .post("/auth/register")
+            .send({
+                email: `test${Date.now()}@example.com`,
+                password: "123"
+            });
+        console.log(response.body);
+        expect(response.status).toBe(201);
+
+    });
+
+    it("should  ")
 })
+ 

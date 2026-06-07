@@ -12,6 +12,10 @@ console.log("authservice jwt is ", JWT_SECRET)
 
 export const register = async (email: string, password: string) => {
 
+  if (password.length < 6) {
+    throw new Error("password to small")
+  }
+  
   const existingUser = await prisma.user.findUnique({
     where: { email },
   });
