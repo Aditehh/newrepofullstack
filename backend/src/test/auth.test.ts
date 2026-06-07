@@ -7,7 +7,8 @@ import app from "../app";
 describe("Auth API", () => {
     it("should register a user", async () => {
 
-        console.log("database url is ", process.env.DATABASE_URL);
+        const jwt_secret = process.env.JWT_SECRET!;
+        console.log("database url is ", jwt_secret);
 
         const response = await request(app)
             .post("/auth/register")
@@ -129,6 +130,7 @@ describe("Auth API", () => {
         expect(response.status).toBe(404);
     });
 
+
     it("should reject invalid email format on login", async () => {
         const response = await request(app)
             .post("/auth/login")
@@ -153,10 +155,9 @@ describe("Auth API", () => {
             .post("/auth/login")
             .send({
                 email,
-                password: undefined
             });
 
-        expect(response.status).toBe()
+        expect(response.status).toBe(400)
     })
 })
 
