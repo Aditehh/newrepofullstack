@@ -1,12 +1,13 @@
 import request from "supertest";
-import app from "../app";
+
 import { describe, it, expect } from "vitest";
+import app from "../app";
 
 
 describe("Auth API", () => {
     it("should register a user", async () => {
 
-        console.log("database url is ",process.env.DATABASE_URL);
+        console.log("database url is ", process.env.DATABASE_URL);
 
         const response = await request(app)
             .post("/auth/register")
