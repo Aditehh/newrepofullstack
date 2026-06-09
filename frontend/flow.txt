@@ -253,6 +253,7 @@ Learn:
 
 unit
 integration
+
 4. File Upload
 
 Estimated: 3–5 days
@@ -269,6 +270,7 @@ avatar upload
 Then later:
 
 cloud storage
+query
 5. Redis Cache
 
 Estimated: 4–6 days

@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import * as authService from "../services/auth.service";
 import jwt from "jsonwebtoken";
 import { registerSchema } from "../validators/auth.validator";
@@ -63,7 +63,7 @@ export const registerUser = async (req: Request, res: Response) => {
 //     );
 
 
-export const loginUser = async (req: Request, res: Response) => {
+export const loginUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
 
         logger.info({
@@ -92,7 +92,8 @@ export const loginUser = async (req: Request, res: Response) => {
         // res.status(401).json({
         //     message: "Login failed"
         // })
-        throw error;
+        // throw error;
+        next(error)
     }
 
 }

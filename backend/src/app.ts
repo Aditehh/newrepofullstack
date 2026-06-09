@@ -1,4 +1,3 @@
-
 import express from "express";
 import cors from "cors";
 import noteRoutes from "./routes/note.routes"
@@ -8,6 +7,8 @@ import authRoutes from "./routes/auth.routes";
 import { globalLimiter } from "./middleware/rateLimit.middleware";
 import { pinoHttp } from "pino-http";
 import { logger } from "./utils/logger";
+import uploadRoutes from "./routes/upload.route"
+import path from "path";
 
 
 
@@ -28,6 +29,15 @@ app.use(express.json());
 app.use("/auth", authRoutes)
 
 app.use("/notes", noteRoutes);
+app.use("upload", uploadRoutes);
+
+app.use(
+    "/uploads",
+    express.static(
+        path.join(process.cwd(), "uploads")
+    )
+);
+
 
 app.use(errorHandler)
 // the errorHandler is at the last because middleware chain flows downward
