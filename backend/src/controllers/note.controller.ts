@@ -47,7 +47,8 @@ export const createNewNote = async (req: Request, res: Response) => {
         const parsed = createNoteSchema.parse(req.body)
         const userId = (req as any).userId;
 
-
+        const file = req.file;
+        const filePath = file ? `/uploads/${file.filename}` : null;
 
         logger.info({ userId }, "create note request reveived")
 
@@ -55,7 +56,7 @@ export const createNewNote = async (req: Request, res: Response) => {
             parsed.title,
             parsed.content,
             userId,
-            parsed.file
+            filePath,
         );
 
 
