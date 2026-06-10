@@ -199,6 +199,7 @@ export default function NotesPage() {
     const uploadFile = async () => {
         const token = localStorage.getItem("accessToken");
 
+
     }
 
     const deleteNote = async (id: string) => {
@@ -214,7 +215,7 @@ export default function NotesPage() {
 
         //     // });
 
-        
+
 
         await apiFetch(
             `http://localhost:3001/notes/${id}`, {
@@ -425,6 +426,10 @@ export default function NotesPage() {
                                         <p className="text-gray-600 mb-5 whitespace-pre-line">
                                             {note.content}
                                         </p>
+
+                                        {note.file && (
+                                            <img src={`http://localhost:3001${note.file}`} alt={note.title} width={200} />
+                                        )}
 
                                         <div className="flex justify-between">
                                             <button
