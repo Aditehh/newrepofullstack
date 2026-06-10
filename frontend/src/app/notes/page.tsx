@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import { apiFetch } from '@/lib/api';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
+import axios from 'axios';
 
 
 export default function NotesPage() {
@@ -18,7 +19,7 @@ export default function NotesPage() {
     // const [currentPage, setCurrentPage] = useState(1);
     // const [page, setPage] = useState(1)
     const [loading, setLoading] = useState(false);
-    const [file, setFile] = useState()
+    const [file, setFile] = useState<File | null>(null)
 
 
     // console.log("CURRENT PAGE:", page);
@@ -196,8 +197,28 @@ export default function NotesPage() {
         fetchNotes();
     }
 
+    
     const uploadFile = async () => {
         const token = localStorage.getItem("accessToken");
+
+        const formdata = new FormData();
+
+        formdata.append("title", title);
+        formdata.append("content", content);
+
+        if (file) {
+            formdata.append("file", file)
+        }
+
+        await axios.post(
+            "http://localhost:3001/notes",
+            formdata,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        )
 
 
     }
@@ -352,6 +373,23 @@ export default function NotesPage() {
                         className="w-full border border-gray-300 rounded-lg px-4 py-3 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
 
+                    <input
+                        type="file"
+                        onChange={(e) => {
+                            setFile(e.target.files?.[0] || null);
+                        }}
+                    />
+                    <br />
+                    <button
+
+                        onClick={uploadFile}
+                        className="bg-green-600 mb-5 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition"
+
+                    >
+                        add file
+
+                    </button>
+                    <br />
                     <button
                         onClick={createNote}
                         className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition"
