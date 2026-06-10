@@ -49,7 +49,8 @@ export const createNewNote = async (req: Request, res: Response, next: NextFunct
 
         const file = req.file;
         const filePath = file ? `/uploads/${file.filename}` : null;
-
+        console.log("body", req.body)
+        console.log("file", req.file)
         logger.info({ userId }, "create note request reveived")
 
         const result = await noteService.createNote(
@@ -68,6 +69,9 @@ export const createNewNote = async (req: Request, res: Response, next: NextFunct
             userId
         },
             "note created")
+
+
+
 
         res.status(201).json(result);
     } catch (error) {

@@ -197,8 +197,9 @@ export default function NotesPage() {
         fetchNotes();
     }
 
-    
+
     const uploadFile = async () => {
+        
         const token = localStorage.getItem("accessToken");
 
         const formdata = new FormData();
@@ -206,7 +207,7 @@ export default function NotesPage() {
         formdata.append("title", title);
         formdata.append("content", content);
 
-        if (file) {
+        if (file instanceof File) {
             formdata.append("file", file)
         }
 
@@ -380,15 +381,14 @@ export default function NotesPage() {
                         }}
                     />
                     <br />
+
                     <button
-
                         onClick={uploadFile}
-                        className="bg-green-600 mb-5 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition"
-
+                        className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition"
                     >
-                        add file
-
+                        Add file
                     </button>
+
                     <br />
                     <button
                         onClick={createNote}
