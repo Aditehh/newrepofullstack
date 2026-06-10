@@ -46,13 +46,19 @@ export const createNewNote = async (req: Request, res: Response) => {
 
         const parsed = createNoteSchema.parse(req.body)
         const userId = (req as any).userId;
+
+
+
         logger.info({ userId }, "create note request reveived")
+
         const result = await noteService.createNote(
             parsed.title,
             parsed.content,
             userId,
             parsed.file
         );
+
+
         logger.info({
             noteId: result.id,
             title: result.title,

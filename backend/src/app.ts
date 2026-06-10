@@ -7,7 +7,7 @@ import authRoutes from "./routes/auth.routes";
 import { globalLimiter } from "./middleware/rateLimit.middleware";
 import { pinoHttp } from "pino-http";
 import { logger } from "./utils/logger";
-import uploadRoutes from "./routes/upload.route"
+
 import path from "path";
 
 
@@ -29,7 +29,6 @@ app.use("/auth", authRoutes)
 
 app.use("/notes", noteRoutes);
 
-app.use("/uploads", uploadRoutes);
 
 app.use(
     "/uploads",
