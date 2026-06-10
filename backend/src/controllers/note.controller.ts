@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import * as noteService from "../services/note.service"
 import { createNoteSchema, updateNoteSchema } from "../validators/note.validator";
 import AppError from "../utils/AppError";
@@ -41,7 +41,7 @@ export const getAllNotes = async (req: Request, res: Response) => {
 }
 
 
-export const createNewNote = async (req: Request, res: Response) => {
+export const createNewNote = async (req: Request, res: Response, next: NextFunction) => {
     try {
 
         const parsed = createNoteSchema.parse(req.body)
@@ -79,6 +79,7 @@ export const createNewNote = async (req: Request, res: Response) => {
             success: false,
             message: String(error)
         })
+        // next(error);
     }
 
 }
