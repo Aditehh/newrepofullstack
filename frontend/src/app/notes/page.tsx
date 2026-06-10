@@ -18,6 +18,7 @@ export default function NotesPage() {
     // const [currentPage, setCurrentPage] = useState(1);
     // const [page, setPage] = useState(1)
     const [loading, setLoading] = useState(false);
+    const [file, setFile] = useState()
 
 
     // console.log("CURRENT PAGE:", page);
@@ -195,6 +196,11 @@ export default function NotesPage() {
         fetchNotes();
     }
 
+    const uploadFile = async () => {
+        const token = localStorage.getItem("accessToken");
+
+    }
+
     const deleteNote = async (id: string) => {
         const token = localStorage.getItem("accessToken");
 
@@ -207,6 +213,8 @@ export default function NotesPage() {
 
 
         //     // });
+
+        
 
         await apiFetch(
             `http://localhost:3001/notes/${id}`, {

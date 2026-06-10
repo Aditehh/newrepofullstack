@@ -11,13 +11,12 @@ import uploadRoutes from "./routes/upload.route"
 import path from "path";
 
 
-
-
 const app = express();
 
 app.use(express.json());
 
 app.use(globalLimiter);
+
 app.use(
     pinoHttp({
         logger,
@@ -29,14 +28,15 @@ app.use(express.json());
 app.use("/auth", authRoutes)
 
 app.use("/notes", noteRoutes);
-app.use("/upload", uploadRoutes);
 
-// app.use(
-//     "/upload",
-//     express.static(
-//         path.join(process.cwd(), "uploads")
-//     )
-// );
+app.use("/uploads", uploadRoutes);
+
+app.use(
+    "/uploads",
+    express.static(
+        path.join(process.cwd(), "uploads")
+    )
+);
 
 
 app.use(errorHandler)

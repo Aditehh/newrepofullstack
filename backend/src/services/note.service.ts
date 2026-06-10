@@ -45,13 +45,14 @@ export const getNotes = async (
     });
 };
 
-export const createNote = async (title: string, content: string, userId: string) => {
+export const createNote = async (title: string, content: string, userId: string, file: string) => {
     return await prisma.note.create({
 
         data: {
             title,
             content,
-            userId
+            userId,
+            file
         },
 
     });
@@ -62,7 +63,8 @@ export const updateNote = async (
     id: string | string[],
     title?: string,
     content?: string,
-    userId?: string
+    userId?: string,
+
 ) => {
 
     const noteId = Array.isArray(id) ? id[0] : id;
@@ -74,12 +76,13 @@ export const updateNote = async (
         },
         data: {
             ...(title != undefined && ({ title })),
-            ...(content != undefined && ({ content }))
+            ...(content != undefined && ({ content })),
+
         },
     });
 };
 
-export const deleteNote = async (id: string | string[], userId: string) => {
+export const deleteNote = async (id: string | string[], userId: string,) => {
     const noteId = Array.isArray(id) ? id[0] : id;
 
     return await prisma.note.delete({

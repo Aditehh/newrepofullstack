@@ -50,12 +50,14 @@ export const createNewNote = async (req: Request, res: Response) => {
         const result = await noteService.createNote(
             parsed.title,
             parsed.content,
-            userId
+            userId,
+            parsed.file
         );
         logger.info({
             noteId: result.id,
             title: result.title,
             content: result.content,
+            file: result.file,
             userId
         },
             "note created")
@@ -87,6 +89,7 @@ export const updateExistingNote = async (req: Request, res: Response) => {
             parsed.title,
             parsed.content,
             userId
+
 
         );
         logger.info({
@@ -126,4 +129,15 @@ export const deleteExistingNote = async (req: Request, res: Response) => {
     }
 };
 
+
+export const uploadFile = async (
+    req: Request, res: Response
+) => {
+    console.log(req.file)
+
+    return res.status(200).json({
+        success: true,
+        file: req.file
+    })
+}
 
