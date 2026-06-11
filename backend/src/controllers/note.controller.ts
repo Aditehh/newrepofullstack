@@ -4,6 +4,7 @@ import { createNoteSchema, updateNoteSchema } from "../validators/note.validator
 import AppError from "../utils/AppError";
 import { logger } from "../utils/logger";
 import { uploadToCloudinary } from "../services/upload.service";
+import { file } from "zod";
 
 
 
@@ -86,6 +87,7 @@ export const createNewNote = async (req: Request, res: Response, next: NextFunct
 
 
         res.status(201).json(result);
+
     } catch (error) {
         logger.error({
             error
@@ -93,7 +95,11 @@ export const createNewNote = async (req: Request, res: Response, next: NextFunct
 
         res.status(400).json({
             success: false,
-            message: String(error)
+            message:
+                error instanceof Error
+                    ? error.message
+                    :"Something went wrong"
+                    
         })
         // next(error);
     }
@@ -140,10 +146,12 @@ export const deleteExistingNote = async (req: Request, res: Response) => {
         const userId = (req as any).userId
         const { id } = req.params;
 
+        
 
         const deleted = await noteService.deleteNote(id, userId);
         res.json(deleted);
         logger.info("Note deleted")
+
     } catch (error) {
         logger.error({ error }, "deletion failed")
         res.status(400).json({

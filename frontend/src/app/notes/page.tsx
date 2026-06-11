@@ -188,6 +188,7 @@ export default function NotesPage() {
 
         setTitle("");
         setContent("");
+        setFile(null);
         fetchNotes();
 
     }

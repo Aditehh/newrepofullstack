@@ -12,3 +12,10 @@ export const uploadToCloudinary =
 
         return result.secure_url;
     }
+
+export const delteFromCloudinary = async (filePath: string) => {
+
+    const result = await cloudinary.uploader.destroy(
+        filePath
+    )
+}

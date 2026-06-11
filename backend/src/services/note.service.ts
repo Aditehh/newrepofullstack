@@ -46,8 +46,8 @@ export const getNotes = async (
     });
 };
 
-export const createNote = async (title: string, content: string, userId: string, file: string | null) => {
 
+export const createNote = async (title: string, content: string, userId: string, file: string | null) => {
 
     return await prisma.note.create({
 
@@ -59,6 +59,7 @@ export const createNote = async (title: string, content: string, userId: string,
         },
 
     });
+
 };
 
 
