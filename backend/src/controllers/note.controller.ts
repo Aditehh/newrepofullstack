@@ -3,6 +3,7 @@ import * as noteService from "../services/note.service"
 import { createNoteSchema, updateNoteSchema } from "../validators/note.validator";
 import AppError from "../utils/AppError";
 import { logger } from "../utils/logger";
+import { uploadToCloudinary } from "../services/upload.service";
 
 
 
@@ -48,16 +49,27 @@ export const createNewNote = async (req: Request, res: Response, next: NextFunct
         const userId = (req as any).userId;
 
         const file = req.file;
-        const filePath = file ? `/uploads/${file.filename}` : null;
+
+        // const filePath = file ? `/uploads/${file.filename}` : null;
+
+        let cloudUrl = null;
+
+        if (file) {
+            cloudUrl = await uploadToCloudinary(
+                file.path
+            )
+        }
+
         console.log("body", req.body)
         console.log("file", req.file)
+
         logger.info({ userId }, "create note request reveived")
 
         const result = await noteService.createNote(
             parsed.title,
             parsed.content,
             userId,
-            filePath,
+            cloudUrl,
         );
 
 

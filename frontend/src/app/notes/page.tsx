@@ -501,7 +501,12 @@ export default function NotesPage() {
                                         </p>
 
                                         {note.file && (
-                                            <img src={`http://localhost:3001${note.file}`} alt={note.title} width={200} />
+                                            <div>
+
+                                                {/* <img src={`http://localhost:3001${note.file}`} alt={note.title} width={200} /> */}
+                                                <img src={note.file} alt={note.title} />
+                                            </div>
+
                                         )}
 
                                         <div className="flex justify-between">

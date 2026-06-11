@@ -4,6 +4,7 @@ import { prisma } from "../db";
 import { logger } from "../utils/logger";
 
 
+
 export const getNotes = async (
     userId: string,
     page: number,
@@ -94,3 +95,4 @@ export const deleteNote = async (id: string | string[], userId: string,) => {
         },
     });
 };
+
