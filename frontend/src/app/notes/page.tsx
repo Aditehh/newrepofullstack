@@ -116,48 +116,81 @@ export default function NotesPage() {
 
 
 
-    const createNote = async () => {
-        const token = localStorage.getItem("accessToken");
+    // const createNote = async () => {
+
+    //     const token = localStorage.getItem("accessToken");
 
 
-        if (!title || !content) return;
+    //     if (!title || !content) return;
 
-        //     // await fetch("http://localhost:3001/notes", {
-        //     //   method: "POST",
-        //     //   headers: {
-        //     //     "Content-Type": "application/json",
-        //     //     Authorization: `Bearer ${token}`
-        //     //   },  
-        //     //   body: JSON.stringify({ title, content })
-        //     // });
+    //     //     // await fetch("http://localhost:3001/notes", {
+    //     //     //   method: "POST",
+    //     //     //   headers: {
+    //     //     //     "Content-Type": "application/json",
+    //     //     //     Authorization: `Bearer ${token}`
+    //     //     //   },  
+    //     //     //   body: JSON.stringify({ title, content })
+    //     //     // });
 
 
-        await apiFetch(
-            "http://localhost:3001/notes", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                title,
-                content
-            })
-        }
-        )
+    //     await apiFetch(
+    //         "http://localhost:3001/notes", {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-Type": "application/json"
+    //         },
+    //         body: JSON.stringify({
+    //             title,
+    //             content
+    //         })
+    //     }
+    //     )
 
-        // console.log(token);
+    //     // console.log(token);
 
-        setTitle("");
-        setContent("");
-        fetchNotes();
 
-    }
+
+    // }
 
     const startEdit = (note: any) => {
         setEditingId(note.id);
         setEditTitle(note.title);
         setEditContent(note.content);
     };
+
+
+    const handleCreateNote = async () => {
+
+        const token = localStorage.getItem("accessToken");
+
+        const formdata = new FormData();
+
+        formdata.append("title", title);
+        formdata.append("content", content);
+
+        if (file instanceof File) {
+            formdata.append("file", file);
+        }
+
+        if (!title || !content)
+            return;
+
+        console.log(title)
+        console.log(content)
+        console.log(file)
+
+        await axios.post("http://localhost:3001/notes", formdata, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+
+
+        setTitle("");
+        setContent("");
+        fetchNotes();
+
+    }
 
 
     const updateNote = async () => {
@@ -198,31 +231,31 @@ export default function NotesPage() {
     }
 
 
-    const uploadFile = async () => {
-        
-        const token = localStorage.getItem("accessToken");
+    // const uploadFile = async () => {
 
-        const formdata = new FormData();
+    //     const token = localStorage.getItem("accessToken");
 
-        formdata.append("title", title);
-        formdata.append("content", content);
+    //     const formdata = new FormData();
 
-        if (file instanceof File) {
-            formdata.append("file", file)
-        }
+    //     formdata.append("title", title);
+    //     formdata.append("content", content);
 
-        await axios.post(
-            "http://localhost:3001/notes",
-            formdata,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            }
-        )
+    //     if (file instanceof File) {
+    //         formdata.append("file", file)
+    //     }
+
+    //     await axios.post(
+    //         "http://localhost:3001/notes",
+    //         formdata,
+    //         {
+    //             headers: {
+    //                 Authorization: `Bearer ${token}`
+    //             }
+    //         }
+    //     )
 
 
-    }
+    // }
 
     const deleteNote = async (id: string) => {
         const token = localStorage.getItem("accessToken");
@@ -382,16 +415,18 @@ export default function NotesPage() {
                     />
                     <br />
 
-                    <button
+                    {/* <button
                         onClick={uploadFile}
                         className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition"
                     >
                         Add file
-                    </button>
+                    </button> */}
+
 
                     <br />
+
                     <button
-                        onClick={createNote}
+                        onClick={handleCreateNote}
                         className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition"
                     >
                         Add Note
