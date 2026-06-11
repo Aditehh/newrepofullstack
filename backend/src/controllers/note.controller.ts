@@ -5,6 +5,7 @@ import AppError from "../utils/AppError";
 import { logger } from "../utils/logger";
 import { uploadToCloudinary } from "../services/upload.service";
 import { file } from "zod";
+import { delteFromCloudinary } from "../services/upload.service";
 
 
 
@@ -98,8 +99,8 @@ export const createNewNote = async (req: Request, res: Response, next: NextFunct
             message:
                 error instanceof Error
                     ? error.message
-                    :"Something went wrong"
-                    
+                    : "Something went wrong"
+
         })
         // next(error);
     }
@@ -146,9 +147,11 @@ export const deleteExistingNote = async (req: Request, res: Response) => {
         const userId = (req as any).userId
         const { id } = req.params;
 
-        
+        const fileId = process.env.CLOUDINARY_CLOUD_NAME!;
 
+        const deletes = await noteService.deleteFromCloudinary(fileId);
         const deleted = await noteService.deleteNote(id, userId);
+        
         res.json(deleted);
         logger.info("Note deleted")
 
