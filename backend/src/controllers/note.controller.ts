@@ -8,7 +8,6 @@ import { file } from "zod";
 import { delteFromCloudinary } from "../services/upload.service";
 
 
-
 export const getAllNotes = async (req: Request, res: Response) => {
 
     try {
@@ -61,6 +60,7 @@ export const createNewNote = async (req: Request, res: Response, next: NextFunct
                 file.path
             )
         }
+
 
         console.log("body", req.body)
         console.log("file", req.file)
@@ -149,10 +149,7 @@ export const deleteExistingNote = async (req: Request, res: Response) => {
 
         const fileId = process.env.CLOUDINARY_CLOUD_NAME!;
 
-        const deletes = await noteService.deleteFromCloudinary(fileId);
-        const deleted = await noteService.deleteNote(id, userId);
-        
-        res.json(deleted);
+
         logger.info("Note deleted")
 
     } catch (error) {

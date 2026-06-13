@@ -17,11 +17,12 @@ model User {
 }
 
 model Note {
-  id        String   @id @default(cuid())
-  title     String
-  content   String
-  createdAt DateTime @default(now())
-  userId    String
-  file      String?
-  user      User     @relation(fields: [userId], references: [id])
+  id           String   @id @default(cuid())
+  title        String
+  content      String
+  createdAt    DateTime @default(now())
+  filePublicId String?
+  userId       String
+  file         String?
+  user         User     @relation(fields: [userId], references: [id])
 }
