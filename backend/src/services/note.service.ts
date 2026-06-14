@@ -47,7 +47,7 @@ export const getNotes = async (
 };
 
 
-export const createNote = async (title: string, content: string, userId: string, file: string | null) => {
+export const createNote = async (title: string, content: string, userId: string, fileUrl: string | null, filePublicId: string | null) => {
 
     return await prisma.note.create({
 
@@ -55,7 +55,8 @@ export const createNote = async (title: string, content: string, userId: string,
             title,
             content,
             userId,
-            file
+            fileUrl,
+            filePublicId
         },
 
     });
@@ -95,7 +96,7 @@ export const deleteNote = async (id: string | string[], userId: string,) => {
         where: {
             id: noteId,
             userId,
-            // file
+
         },
     });
 };

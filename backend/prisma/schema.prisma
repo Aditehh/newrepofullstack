@@ -23,6 +23,6 @@ model Note {
   createdAt    DateTime @default(now())
   filePublicId String?
   userId       String
-  file         String?
+  fileUrl      String?
   user         User     @relation(fields: [userId], references: [id])
 }

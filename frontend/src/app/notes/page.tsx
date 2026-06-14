@@ -501,11 +501,11 @@ export default function NotesPage() {
                                             {note.content}
                                         </p>
 
-                                        {note.file && (
+                                        {note.fileUrl && (
                                             <div>
 
                                                 {/* <img src={`http://localhost:3001${note.file}`} alt={note.title} width={200} /> */}
-                                                <img src={note.file} alt={note.title} />
+                                                <img src={note.fileUrl} alt={note.title} />
                                             </div>
 
                                         )}

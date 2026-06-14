@@ -4,7 +4,7 @@ import { createNoteSchema, updateNoteSchema } from "../validators/note.validator
 import AppError from "../utils/AppError";
 import { logger } from "../utils/logger";
 import { uploadToCloudinary } from "../services/upload.service";
-import { file, success } from "zod";
+import { file, object, string, success } from "zod";
 import { delteFromCloudinary } from "../services/upload.service";
 import cloudinary from "../config/cloudinary";
 
@@ -52,7 +52,10 @@ export const createNewNote = async (req: Request, res: Response, next: NextFunct
 
         const file = req.file;
 
+        
         // const filePath = file ? `/uploads/${file.filename}` : null;
+
+        
 
         let cloudUrl = null;
 
@@ -62,6 +65,8 @@ export const createNewNote = async (req: Request, res: Response, next: NextFunct
             )
         }
 
+        const filePublicId = cloudUrl?.filePublicId ?? null;
+        const fileUrl = cloudUrl?.fileUrl ?? null
 
         console.log("body", req.body)
         console.log("file", req.file)
@@ -72,15 +77,16 @@ export const createNewNote = async (req: Request, res: Response, next: NextFunct
             parsed.title,
             parsed.content,
             userId,
-            cloudUrl,
+            filePublicId,
+            fileUrl
         );
-
+        console.log("result is ", result);
 
         logger.info({
             noteId: result.id,
             title: result.title,
             content: result.content,
-            file: result.file,
+            file: result.fileUrl,
             userId
         },
             "note created")
