@@ -4,8 +4,9 @@ import { createNoteSchema, updateNoteSchema } from "../validators/note.validator
 import AppError from "../utils/AppError";
 import { logger } from "../utils/logger";
 import { uploadToCloudinary } from "../services/upload.service";
-import { file } from "zod";
+import { file, success } from "zod";
 import { delteFromCloudinary } from "../services/upload.service";
+import cloudinary from "../config/cloudinary";
 
 
 export const getAllNotes = async (req: Request, res: Response) => {
@@ -84,9 +85,6 @@ export const createNewNote = async (req: Request, res: Response, next: NextFunct
         },
             "note created")
 
-
-
-
         res.status(201).json(result);
 
     } catch (error) {
@@ -144,13 +142,28 @@ export const updateExistingNote = async (req: Request, res: Response) => {
 export const deleteExistingNote = async (req: Request, res: Response) => {
     try {
 
-        const userId = (req as any).userId
+        const userId = (req as any).userId;
+        // const { public_id } = req.body;
         const { id } = req.params;
+        // const file = req.file;
 
-        const fileId = process.env.CLOUDINARY_CLOUD_NAME!;
+        // if (!public_id) {
+        //     return res.status(400).json({
+        //         success: false,
+        //         message: "Public Id not found"
+        //     })
+        // }
 
+        // const result = await cloudinary.uploader.destroy(public_id)
+
+
+
+        const result = await noteService.deleteNote(id, userId)
+
+        res.status(201).json(result)
 
         logger.info("Note deleted")
+
 
     } catch (error) {
         logger.error({ error }, "deletion failed")

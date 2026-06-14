@@ -86,14 +86,16 @@ export const updateNote = async (
     });
 };
 
-export const deleteNote = async (id: string | string[], userId: string, file: string | null) => {
+
+export const deleteNote = async (id: string | string[], userId: string,) => {
+
     const noteId = Array.isArray(id) ? id[0] : id;
 
     return await prisma.note.delete({
         where: {
             id: noteId,
             userId,
-            file
+            // file
         },
     });
 };

@@ -10,7 +10,7 @@ export const uploadToCloudinary =
             }
         );
 
-        return result.secure_url, result.public_id;
+        return result.secure_url;
     }
 
 export const delteFromCloudinary = async (filePath: string) => {
