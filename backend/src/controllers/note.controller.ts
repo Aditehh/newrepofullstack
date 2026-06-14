@@ -52,10 +52,9 @@ export const createNewNote = async (req: Request, res: Response, next: NextFunct
 
         const file = req.file;
 
-        
+
         // const filePath = file ? `/uploads/${file.filename}` : null;
 
-        
 
         let cloudUrl = null;
 
@@ -64,12 +63,18 @@ export const createNewNote = async (req: Request, res: Response, next: NextFunct
                 file.path
             )
         }
+        console.log("file path is ", file?.path)
 
         const filePublicId = cloudUrl?.filePublicId ?? null;
         const fileUrl = cloudUrl?.fileUrl ?? null
 
         console.log("body", req.body)
         console.log("file", req.file)
+        console.log("file path", req.file?.path)
+        console.log("fileUrl is ", fileUrl)
+        console.log("cloudUrl is ", cloudUrl);
+
+
 
         logger.info({ userId }, "create note request reveived")
 
@@ -77,8 +82,8 @@ export const createNewNote = async (req: Request, res: Response, next: NextFunct
             parsed.title,
             parsed.content,
             userId,
+            fileUrl,
             filePublicId,
-            fileUrl
         );
         console.log("result is ", result);
 
@@ -86,8 +91,9 @@ export const createNewNote = async (req: Request, res: Response, next: NextFunct
             noteId: result.id,
             title: result.title,
             content: result.content,
-            file: result.fileUrl,
-            userId
+            fileUrl: result.fileUrl,
+            userId,
+            filepublicIdis: filePublicId
         },
             "note created")
 
