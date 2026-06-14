@@ -54,6 +54,8 @@ export const createNewNote = async (req: Request, res: Response, next: NextFunct
 
 
         // const filePath = file ? `/uploads/${file.filename}` : null;
+        console.log("file path is ", req.file?.path)
+        console.log("file object", req.file)
 
 
         let cloudUrl = null;
@@ -63,7 +65,6 @@ export const createNewNote = async (req: Request, res: Response, next: NextFunct
                 file.path
             )
         }
-        console.log("file path is ", file?.path)
 
         const filePublicId = cloudUrl?.filePublicId ?? null;
         const fileUrl = cloudUrl?.fileUrl ?? null
@@ -157,7 +158,7 @@ export const deleteExistingNote = async (req: Request, res: Response) => {
         const userId = (req as any).userId;
         // const { public_id } = req.body;
         const { id } = req.params;
-        // const file = req.file;
+        const file = req.file;
 
         // if (!public_id) {
         //     return res.status(400).json({
@@ -168,9 +169,17 @@ export const deleteExistingNote = async (req: Request, res: Response) => {
 
         // const result = await cloudinary.uploader.destroy(public_id)
 
+        let cloudUrl = null;
 
+        if (file) {
+            cloudUrl = await delteFromCloudinary(
+                file.path
+            )
+        }
 
-        const result = await noteService.deleteNote(id, userId)
+        const filePublicId = cloudUrl?.filePublicId ?? null;
+
+        const result = await noteService.deleteNote(id, userId, filePublicId)
 
         res.status(201).json(result)
 

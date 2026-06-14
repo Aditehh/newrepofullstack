@@ -18,9 +18,12 @@ export const uploadToCloudinary =
 
     }
 
-export const delteFromCloudinary = async (filePath: string) => {
+export const delteFromCloudinary = async (filePublicId: string) => {
+
+    console.log("public id of the image is ",filePublicId);
 
     const result = await cloudinary.uploader.destroy(
-        filePath
-    )
+        filePublicId
+    );
+    // return result.public_id;
 }

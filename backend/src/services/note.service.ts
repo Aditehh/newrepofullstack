@@ -88,7 +88,7 @@ export const updateNote = async (
 };
 
 
-export const deleteNote = async (id: string | string[], userId: string,) => {
+export const deleteNote = async (id: string | string[], userId: string, filePublicId: string | null) => {
 
     const noteId = Array.isArray(id) ? id[0] : id;
 
@@ -96,7 +96,7 @@ export const deleteNote = async (id: string | string[], userId: string,) => {
         where: {
             id: noteId,
             userId,
-
+            filePublicId
         },
     });
 };
