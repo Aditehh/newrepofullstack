@@ -5,6 +5,25 @@ import { logger } from "../utils/logger";
 
 
 
+
+export const getNoteById = async (
+    noteId: string,
+    userId: string
+) => {
+    return await prisma.note.findFirst({
+        where: {
+            id: noteId,
+            userId: userId,
+        },
+    });
+};
+
+
+
+
+
+
+
 export const getNotes = async (
     userId: string,
     page: number,
@@ -88,7 +107,7 @@ export const updateNote = async (
 };
 
 
-export const deleteNote = async (id: string | string[], userId: string, filePublicId: string | null) => {
+export const deleteNote = async (id: string | string[], userId: string) => {
 
     const noteId = Array.isArray(id) ? id[0] : id;
 
@@ -96,7 +115,7 @@ export const deleteNote = async (id: string | string[], userId: string, filePubl
         where: {
             id: noteId,
             userId,
-            filePublicId
+            
         },
     });
 };

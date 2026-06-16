@@ -158,28 +158,22 @@ export const deleteExistingNote = async (req: Request, res: Response) => {
         const userId = (req as any).userId;
         // const { public_id } = req.body;
         const { id } = req.params;
-        const file = req.file;
 
-        // if (!public_id) {
-        //     return res.status(400).json({
-        //         success: false,
-        //         message: "Public Id not found"
-        //     })
-        // }
+        const note = await noteService.getNoteById(id as string, userId);
 
-        // const result = await cloudinary.uploader.destroy(public_id)
-
-        let cloudUrl = null;
-
-        if (file) {
-            cloudUrl = await delteFromCloudinary(
-                file.path
-            )
+        if (!note) {
+            return res.status(404).json({
+                success: false,
+                message: "Note not found"
+            })
         }
 
-        const filePublicId = cloudUrl?.filePublicId ?? null;
+        if (note.filePublicId) {
+            await delteFromCloudinary(note.filePublicId)
+        }
 
-        const result = await noteService.deleteNote(id, userId, filePublicId)
+
+        const result = await noteService.deleteNote(id, userId)
 
         res.status(201).json(result)
 

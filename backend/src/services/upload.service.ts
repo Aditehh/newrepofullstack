@@ -26,4 +26,5 @@ export const delteFromCloudinary = async (filePublicId: string) => {
         filePublicId
     );
     // return result.public_id;
+    return filePublicId
 }
