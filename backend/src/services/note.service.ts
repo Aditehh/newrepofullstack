@@ -1,5 +1,6 @@
 //business logic
 //talks to the database and things like that ig
+import { redisClient } from "../config/redis";
 import { prisma } from "../db";
 import { logger } from "../utils/logger";
 
@@ -34,7 +35,15 @@ export const getNotes = async (
     const skip =
         (page - 1) * limit;
 
-    return await prisma.note.findMany({
+    const cache = await redisClient.get(userId);
+
+    if (cache)
+        return JSON.parse(cache)
+
+
+
+
+    const notes = await prisma.note.findMany({
         where: {
             userId,
 
@@ -62,7 +71,14 @@ export const getNotes = async (
         take: limit,
 
         orderBy: { createdAt: "desc" },
+
+
     });
+
+    await redisClient.set(userId, JSON.stringify(notes));
+
+    return notes;
+
 };
 
 
@@ -115,7 +131,7 @@ export const deleteNote = async (id: string | string[], userId: string) => {
         where: {
             id: noteId,
             userId,
-            
+
         },
     });
 };
