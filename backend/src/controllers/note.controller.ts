@@ -10,7 +10,8 @@ import cloudinary from "../config/cloudinary";
 
 
 export const getAllNotes = async (req: Request, res: Response) => {
-
+    
+console.log("is it not working my hinga")
     try {
         logger.info({ note: (req as any).body }, "request received")
         const userId = (req as any).userId;
@@ -22,6 +23,7 @@ export const getAllNotes = async (req: Request, res: Response) => {
         const limit = Number(req.query.limit) || 10;
 
         const search = String(req.query.search) || "";
+        console.log("helo cnonasd carsinogen")
 
         const notes = await noteService.getNotes(
             userId,
@@ -31,6 +33,7 @@ export const getAllNotes = async (req: Request, res: Response) => {
         );
         logger.info({ userId, page, count: notes.length }, "response note page generated")
         res.json(notes);
+
     } catch (error) {
         console.log(error);
         logger.error({
@@ -45,8 +48,11 @@ export const getAllNotes = async (req: Request, res: Response) => {
 
 
 export const createNewNote = async (req: Request, res: Response, next: NextFunction) => {
-    try {
+    
+    console.log("is it working ")
 
+    try {
+        console.log("hello controller for redis")
         const parsed = createNoteSchema.parse(req.body)
         const userId = (req as any).userId;
 
@@ -153,6 +159,7 @@ export const updateExistingNote = async (req: Request, res: Response) => {
 };
 
 export const deleteExistingNote = async (req: Request, res: Response) => {
+
     try {
 
         const userId = (req as any).userId;

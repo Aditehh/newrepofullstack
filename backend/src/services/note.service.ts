@@ -20,11 +20,6 @@ export const getNoteById = async (
 };
 
 
-
-
-
-
-
 export const getNotes = async (
     userId: string,
     page: number,
@@ -88,7 +83,7 @@ export const getNotes = async (
     });
 
 
-    await redisClient.setEx(cacheKey, 60, JSON.stringify(notes));
+    await redisClient.set(cacheKey, JSON.stringify(notes));
 
     return notes;
 
@@ -97,7 +92,7 @@ export const getNotes = async (
 
 export const createNote = async (title: string, content: string, userId: string, fileUrl: string | null, filePublicId: string | null) => {
 
-    return await prisma.note.create({
+    const newNotes = await prisma.note.create({
 
         data: {
             title,
@@ -107,7 +102,18 @@ export const createNote = async (title: string, content: string, userId: string,
             filePublicId
         },
 
+
     });
+
+    const keys = await redisClient.keys(`notes:${userId}:*`);
+
+    console.log("found cache keys ", keys)
+
+    if (keys.length > 0) {
+        await redisClient.del(keys)
+    };
+
+    return newNotes;
 
 };
 
