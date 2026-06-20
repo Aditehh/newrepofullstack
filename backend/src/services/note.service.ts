@@ -35,14 +35,25 @@ export const getNotes = async (
     const skip =
         (page - 1) * limit;
 
-    const cache = await redisClient.get(userId);
-
-    if (cache)
-        return JSON.parse(cache)
 
 
 
+    const cacheKey = `notes:${userId}:page:${page}:limit:${limit}:search:${search}`;
 
+    const cache = await redisClient.get(cacheKey);
+
+
+    if (cache) {
+        logger.info("CACHE HIT");
+        return JSON.parse(cache);
+    }
+
+
+
+
+    logger.info("CACHE MISS")
+    logger.info("QUERYING DATABASE");
+    
     const notes = await prisma.note.findMany({
         where: {
             userId,
@@ -75,7 +86,8 @@ export const getNotes = async (
 
     });
 
-    await redisClient.set(userId, JSON.stringify(notes));
+
+    await redisClient.set(cacheKey, JSON.stringify(notes));
 
     return notes;
 
