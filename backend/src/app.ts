@@ -7,6 +7,8 @@ import authRoutes from "./routes/auth.routes";
 import { globalLimiter } from "./middleware/rateLimit.middleware";
 import { pinoHttp } from "pino-http";
 import { logger } from "./utils/logger";
+import { connectRedis } from "./config/redis";
+
 
 import path from "path";
 
@@ -25,6 +27,11 @@ app.use(
 
 app.use(cors());
 app.use(express.json());
+
+connectRedis().then(() => {
+    console.log("REDIS READY")
+})
+
 app.use("/auth", authRoutes)
 
 app.use("/notes", noteRoutes);

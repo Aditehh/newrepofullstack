@@ -39,8 +39,10 @@ export const getNotes = async (
 
 
     const cacheKey = `notes:${userId}:page:${page}:limit:${limit}:search:${search}`;
-
+    console.log("cachekey is ", cacheKey)
+    console.log("Redis open? ", redisClient.isOpen)
     const cache = await redisClient.get(cacheKey);
+    console.log("cache is ", cache)
 
 
     if (cache) {
@@ -53,7 +55,7 @@ export const getNotes = async (
 
     logger.info("CACHE MISS")
     logger.info("QUERYING DATABASE");
-    
+
     const notes = await prisma.note.findMany({
         where: {
             userId,
