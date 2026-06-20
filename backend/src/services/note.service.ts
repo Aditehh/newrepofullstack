@@ -36,9 +36,9 @@ export const getNotes = async (
         (page - 1) * limit;
 
 
+    console.log("getnotes service called ")
 
-
-    const cacheKey = `notes:${userId}:page:${page}:limit:${limit}:search:${search}`;
+    const cacheKey = `notes:${userId}:page:${page}:limit:${limit}:search:${search?.trim() || ""}`;
     console.log("cachekey is ", cacheKey)
     console.log("Redis open? ", redisClient.isOpen)
     const cache = await redisClient.get(cacheKey);
@@ -47,13 +47,12 @@ export const getNotes = async (
 
     if (cache) {
         logger.info("CACHE HIT");
+        console.log("CACHE HITT")
         return JSON.parse(cache);
     }
 
-
-
-
     logger.info("CACHE MISS")
+    console.log("CACHE MISS")
     logger.info("QUERYING DATABASE");
 
     const notes = await prisma.note.findMany({
@@ -89,7 +88,7 @@ export const getNotes = async (
     });
 
 
-    await redisClient.set(cacheKey, JSON.stringify(notes));
+    await redisClient.setEx(cacheKey, 60, JSON.stringify(notes));
 
     return notes;
 
