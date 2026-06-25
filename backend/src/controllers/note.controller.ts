@@ -10,8 +10,7 @@ import cloudinary from "../config/cloudinary";
 
 
 export const getAllNotes = async (req: Request, res: Response) => {
-    
-console.log("is it not working my hinga")
+throw new Error("Controller hit")
     try {
         logger.info({ note: (req as any).body }, "request received")
         const userId = (req as any).userId;
