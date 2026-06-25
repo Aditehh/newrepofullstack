@@ -26,6 +26,7 @@ export const getNotes = async (
     limit: number,
     search: string
 ) => {
+    
     const skip =
         (page - 1) * limit;
 

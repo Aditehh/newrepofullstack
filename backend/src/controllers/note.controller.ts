@@ -10,7 +10,7 @@ import cloudinary from "../config/cloudinary";
 
 
 export const getAllNotes = async (req: Request, res: Response) => {
-throw new Error("Controller hit")
+// throw new Error("Controller hit")
     try {
         logger.info({ note: (req as any).body }, "request received")
         const userId = (req as any).userId;
