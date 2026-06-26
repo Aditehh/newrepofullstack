@@ -26,7 +26,7 @@ export const getNotes = async (
     limit: number,
     search: string
 ) => {
-    
+
     const skip =
         (page - 1) * limit;
 
@@ -111,7 +111,7 @@ export const createNote = async (title: string, content: string, userId: string,
 
     if (keys.length > 0) {
         await redisClient.del(keys)
-    };
+    };  
 
     return newNotes;
 
