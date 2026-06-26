@@ -111,7 +111,7 @@ export const createNote = async (title: string, content: string, userId: string,
 
     if (keys.length > 0) {
         await redisClient.del(keys)
-    };  
+    };
 
     return newNotes;
 
@@ -128,7 +128,7 @@ export const updateNote = async (
 
     const noteId = Array.isArray(id) ? id[0] : id;
 
-    return await prisma.note.update({
+    const updatedNotes = await await prisma.note.update({
         where: {
             id: noteId,
             userId
@@ -139,6 +139,14 @@ export const updateNote = async (
 
         },
     });
+
+    const keys = await redisClient.keys(`notes:${userId}:*`)
+    if (keys.length > 0) {
+        await redisClient.del(keys)
+    }
+
+    return updatedNotes;
+
 };
 
 
@@ -146,12 +154,18 @@ export const deleteNote = async (id: string | string[], userId: string) => {
 
     const noteId = Array.isArray(id) ? id[0] : id;
 
-    return await prisma.note.delete({
+    const deleteNotes = await await prisma.note.delete({
         where: {
             id: noteId,
             userId,
 
         },
     });
+
+    const keys = await redisClient.keys(`notes:${userId}:*`);
+
+    if (keys.length > 0) {
+        await redisClient.del(keys)
+    }
 };
 
