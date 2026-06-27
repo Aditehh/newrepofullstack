@@ -10,7 +10,7 @@ import cloudinary from "../config/cloudinary";
 
 
 export const getAllNotes = async (req: Request, res: Response) => {
-// throw new Error("Controller hit")
+    // throw new Error("Controller hit")
     try {
         logger.info({ note: (req as any).body }, "request received")
         const userId = (req as any).userId;
@@ -47,7 +47,7 @@ export const getAllNotes = async (req: Request, res: Response) => {
 
 
 export const createNewNote = async (req: Request, res: Response, next: NextFunction) => {
-    
+
     console.log("is it working ")
 
     try {
@@ -84,6 +84,8 @@ export const createNewNote = async (req: Request, res: Response, next: NextFunct
 
         logger.info({ userId }, "create note request reveived")
 
+        console.log("About to call createNote");
+        console.log(noteService);
         const result = await noteService.createNote(
             parsed.title,
             parsed.content,

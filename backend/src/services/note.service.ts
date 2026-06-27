@@ -7,6 +7,7 @@ import { logger } from "../utils/logger";
 
 
 
+
 export const getNoteById = async (
     noteId: string,
     userId: string
@@ -91,7 +92,8 @@ export const getNotes = async (
 
 
 export const createNote = async (title: string, content: string, userId: string, fileUrl: string | null, filePublicId: string | null) => {
-
+ 
+    console.log("create note service called")
     const newNotes = await prisma.note.create({
 
         data: {
@@ -140,10 +142,13 @@ export const updateNote = async (
         },
     });
 
+
     const keys = await redisClient.keys(`notes:${userId}:*`)
+    console.log("found keys in update note is ", keys)
     if (keys.length > 0) {
         await redisClient.del(keys)
     }
+    console.log("userid in update notes is ", userId)
 
     return updatedNotes;
 
@@ -162,10 +167,14 @@ export const deleteNote = async (id: string | string[], userId: string) => {
         },
     });
 
-    const keys = await redisClient.keys(`notes:${userId}:*`);
 
+    const keys = await redisClient.keys(`notes:${userId}:*`);
+    console.log("found keys in delete notes is ", keys)
     if (keys.length > 0) {
         await redisClient.del(keys)
     }
+    console.log("userid in delete is ", userId);
+
+    return deleteNotes;
 };
 
