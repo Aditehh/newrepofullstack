@@ -189,7 +189,7 @@ export default function NotesPage() {
         setTitle("");
         setContent("");
         setFile(null);
-        fetchNotes();
+        await fetchNotes();
 
     }
 
@@ -213,7 +213,7 @@ export default function NotesPage() {
 
         await apiFetch(
             `http://localhost:3001/notes/${editingId}`, {
-            method: "POST",
+            method: "PUT",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`
@@ -228,7 +228,7 @@ export default function NotesPage() {
         setEditingId(null);
         setEditTitle("");
         setEditContent("");
-        fetchNotes();
+        await fetchNotes();
     }
 
 
@@ -282,7 +282,7 @@ export default function NotesPage() {
         }
         )
 
-        fetchNotes();
+        await fetchNotes();
         console.log("Notes is ", notes)
         console.log("Type ", typeof notes)
     }

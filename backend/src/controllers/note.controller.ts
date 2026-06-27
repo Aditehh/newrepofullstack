@@ -85,7 +85,7 @@ export const createNewNote = async (req: Request, res: Response, next: NextFunct
         logger.info({ userId }, "create note request reveived")
 
         console.log("About to call createNote");
-        console.log(noteService);
+        console.log("noteservice is ",noteService);
         const result = await noteService.createNote(
             parsed.title,
             parsed.content,

@@ -94,6 +94,7 @@ export const getNotes = async (
 export const createNote = async (title: string, content: string, userId: string, fileUrl: string | null, filePublicId: string | null) => {
  
     console.log("create note service called")
+    throw new Error("STOP")
     const newNotes = await prisma.note.create({
 
         data: {
