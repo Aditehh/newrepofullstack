@@ -174,7 +174,7 @@ export const deleteExistingNote = async (req: Request, res: Response) => {
                 success: false,
                 message: "Note not found"
             })
-        }
+        }   
 
         if (note.filePublicId) {
             await delteFromCloudinary(note.filePublicId)
@@ -186,7 +186,7 @@ export const deleteExistingNote = async (req: Request, res: Response) => {
         const result = await noteService.deleteNote(id, userId);
 
         console.log("After delete service");
-        
+
         res.status(201).json(result)
 
         logger.info("Note deleted")
