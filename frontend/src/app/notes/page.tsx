@@ -99,6 +99,7 @@ export default function NotesPage() {
                 }
             });
             const data = await res.json();
+            console.log("fetched notes are ", data)
 
             if (Array.isArray(data)) {
                 setNotes(data);

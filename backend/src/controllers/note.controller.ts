@@ -85,7 +85,7 @@ export const createNewNote = async (req: Request, res: Response, next: NextFunct
         logger.info({ userId }, "create note request reveived")
 
         console.log("About to call createNote");
-        console.log("noteservice is ",noteService);
+        console.log("noteservice is ", noteService);
         const result = await noteService.createNote(
             parsed.title,
             parsed.content,
@@ -181,8 +181,12 @@ export const deleteExistingNote = async (req: Request, res: Response) => {
         }
 
 
-        const result = await noteService.deleteNote(id, userId)
+        console.log("Before delete service");
 
+        const result = await noteService.deleteNote(id, userId);
+
+        console.log("After delete service");
+        
         res.status(201).json(result)
 
         logger.info("Note deleted")

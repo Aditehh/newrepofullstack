@@ -1,5 +1,8 @@
 //business logic
 //talks to the database and things like that ig
+
+console.log("loaded note service from ", __filename)
+
 import { redisClient } from "../config/redis";
 import { prisma } from "../db";
 import { logger } from "../utils/logger";
@@ -92,9 +95,8 @@ export const getNotes = async (
 
 
 export const createNote = async (title: string, content: string, userId: string, fileUrl: string | null, filePublicId: string | null) => {
- 
+
     console.log("create note service called")
-    throw new Error("STOP")
     const newNotes = await prisma.note.create({
 
         data: {
@@ -156,26 +158,50 @@ export const updateNote = async (
 };
 
 
+// export const deleteNote = async (id: string | string[], userId: string) => {
+
+//     const noteId = Array.isArray(id) ? id[0] : id;
+
+//     const deleteNotes = await await prisma.note.delete({
+//         where: {
+//             id: noteId,
+//             userId,
+
+//         },
+//     });
+
+
+//     const keys = await redisClient.keys(`notes:${userId}:*`);
+//     console.log("found keys in delete notes is ", keys)
+//     if (keys.length > 0) {
+//         await redisClient.del(keys)
+//     }
+//     console.log("userid in delete is ", userId);
+
+//     return deleteNotes;
+// };
+
+
 export const deleteNote = async (id: string | string[], userId: string) => {
+
+    console.log("DELETE SERVICE START");
 
     const noteId = Array.isArray(id) ? id[0] : id;
 
-    const deleteNotes = await await prisma.note.delete({
+    throw new Error("I should crash")
+
+    const deleteNotes = await prisma.note.delete({
         where: {
             id: noteId,
             userId,
-
         },
     });
 
+    // throw new Error("DELETE SERVICE REACHED");
 
     const keys = await redisClient.keys(`notes:${userId}:*`);
-    console.log("found keys in delete notes is ", keys)
-    if (keys.length > 0) {
-        await redisClient.del(keys)
-    }
-    console.log("userid in delete is ", userId);
+
+    await redisClient.del(keys);
 
     return deleteNotes;
 };
-
